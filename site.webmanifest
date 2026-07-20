@@ -1,0 +1,12 @@
+{
+  "name": "Quiet Optics",
+  "short_name": "Quiet Optics",
+  "icons": [
+    { "src": "/assets/icon-192.png", "type": "image/png", "sizes": "192x192" },
+    { "src": "/assets/icon-512.png", "type": "image/png", "sizes": "512x512" }
+  ],
+  "theme_color": "#0a0e16",
+  "background_color": "#0a0e16",
+  "display": "browser",
+  "start_url": "/"
+}

@@ -5,7 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark light">
 <title>Quiet Optics — instruments for the mind</title>
-<meta name="description" content="Quiet Optics makes private journal apps for iPhone and iPad — honest scoring for hunches, predictions, and intentions.">
+<meta name="description" content="Quiet Optics makes private journal apps for iPhone and iPad: honest scoring for hunches, predictions, and intentions.">
+<link rel="canonical" href="https://quietoptics.com/">
+<meta property="og:site_name" content="Quiet Optics">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Quiet Optics — instruments for the mind">
+<meta property="og:description" content="Quiet Optics makes private journal apps for iPhone and iPad: honest scoring for hunches, predictions, and intentions.">
+<meta property="og:url" content="https://quietoptics.com/">
+<meta property="og:image" content="https://quietoptics.com/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0a0e16">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f4f6f9">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <style>
@@ -70,6 +84,14 @@
   .manifesto { margin-top:64px; max-width:60ch; }
   .manifesto p { color:var(--dim); font-size:1.06rem; margin:0 0 1.15em; }
   .manifesto p:last-child { margin-bottom:0; }
+  .manifesto ul { list-style:none; margin:0 0 1.15em; padding:0; }
+  .manifesto li { color:var(--dim); font-size:1.06rem; margin:.5em 0; padding-left:24px; position:relative; }
+  .manifesto li::before { content:""; position:absolute; left:0; top:.62em; width:12px; height:2px;
+    border-radius:1px; background:var(--accent); }
+  .manifesto li:nth-child(1)::before { background:var(--s-teal); }
+  .manifesto li:nth-child(2)::before { background:var(--s-blue); }
+  .manifesto li:nth-child(3)::before { background:var(--s-violet); }
+  .manifesto li:nth-child(4)::before { background:var(--s-copper); }
   .manifesto strong { color:var(--accent-strong); font-weight:600; }
 
   .apps { margin-top:64px; display:flex; flex-direction:column; gap:16px; }
@@ -175,14 +197,21 @@
   <div class="eyebrow">Quiet Optics</div>
   <h1>Instruments for the mind.</h1>
   <div class="prism" aria-hidden="true"></div>
-  <p class="lede">Private journals for iPhone and iPad — a place to channel your hunches, intentions, and predictions, and find out what your own record says.</p>
+  <p class="lede">Private journals for iPhone and iPad. A place to channel your hunches, intentions, and predictions, and find out what your own record says.</p>
 
   <div class="manifesto">
-    <p>Quiet Optics makes small, careful journals for the corners of experience people usually only get sold answers to — remote viewing, forecasting, intention, precognition. Not a lab, and not a belief system: a notebook with good instruments in it. Somewhere to put all of it down, for the quiet fun of actually finding out.</p>
+    <p>Quiet Optics makes small, careful journals for the corners of experience people usually only get sold answers to: remote viewing, forecasting, intention, precognition. Not a lab, and not a belief system. A notebook with good instruments in it, somewhere to put all of it down, for the quiet fun of actually finding out.</p>
 
-    <p>Every app here does the same simple thing: you write it down, seal it before you know how things turn out, resolve it later, and get scored fairly against an honest baseline. No readings, no pep talks, no wince. If something's there for you, your record will show it. If it's noise, you'll know that too — and the journal is still yours, still private, still worth keeping.</p>
+    <p>Every app here does the same simple thing:</p>
+    <ul>
+      <li>Write it down.</li>
+      <li>Seal it before you know how things turn out.</li>
+      <li>Resolve it later.</li>
+      <li>Get scored fairly against an honest baseline.</li>
+    </ul>
+    <p>No readings, no pep talks, no wince. If something's there for you, your record will show it. If it's noise, you'll know that too. Either way the journal is still yours, still private, still worth keeping.</p>
 
-    <p>We take no position on whether any of this is real. Neither do the apps — that's exactly the point. Maybe it's noise. Maybe it isn't. Either way, this is how you'd actually find out. Skeptic-friendly, believer-respecting, sober enough to trust and curious enough to bother.</p>
+    <p>We take no position on whether any of this is real. Neither do the apps. That's exactly the point. Maybe it's noise, maybe it isn't; this is how you'd actually find out. Skeptic-friendly, believer-respecting, sober enough to trust and curious enough to bother.</p>
   </div>
 
   <div class="apps">
@@ -190,7 +219,7 @@
       <img class="icon" src="assets/icons/aperture.png" alt="" width="44" height="44" loading="lazy">
       <span class="app-body">
         <span class="app-name">Aperture</span>
-        <div class="app-tag">Blind controlled remote viewing — practice and honest scoring.</div>
+        <div class="app-tag">Blind remote viewing practice with honest scoring.</div>
         <div class="app-status">Coming soon</div>
       </span>
       <span class="arrow">→</span>
@@ -200,7 +229,7 @@
       <img class="icon" src="assets/icons/reticle.png" alt="" width="44" height="44" loading="lazy">
       <span class="app-body">
         <span class="app-name">Reticle</span>
-        <div class="app-tag">A prediction journal that scores your real calibration — see if your 80% means 80%.</div>
+        <div class="app-tag">A prediction journal that checks if your 80% really means 80%.</div>
         <div class="app-status">Coming soon</div>
       </span>
       <span class="arrow">→</span>
@@ -229,8 +258,8 @@
 
   <div class="about">
     <h2>About</h2>
-    <p>Quiet Optics is a small studio making focused journals for attention, judgment, and self-knowledge, for iPhone and iPad. Every app runs <strong>on your device</strong> — no accounts, no analytics, no servers. What you record stays yours.</p>
-    <p class="ai-note"><strong>Instruments, not oracles.</strong> Where these apps use on-device AI at all, it plays referee, not fortune-teller — it checks the call you already made against what actually happened, on your device, and it never once tells you what's going to happen next.</p>
+    <p>Quiet Optics is a small studio making focused journals for attention, judgment, and self-knowledge, for iPhone and iPad. Every app runs <strong>on your device</strong>: no accounts, no analytics, no servers. What you record stays yours.</p>
+    <p class="ai-note"><strong>Instruments, not oracles.</strong> Where these apps use on-device AI at all, it plays referee, not fortune-teller. It checks the call you already made against what actually happened, on your device, and it never once tells you what's going to happen next.</p>
   </div>
 
   <footer>

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<meta name="robots" content="noindex">
+<title>Not found — Quiet Optics</title>
+<meta name="theme-color" content="#0a0e16">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f4f6f9">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<style>
+  :root {
+    --bg:#0a0e16; --bg-tint:#0c1220;
+    --ink:#e9ecf2; --dim:#9aa3b4; --faint:#5c657a;
+    --line:#1e2636;
+    --accent:#5fd3c4; --accent-strong:#7fe0d3; --accent-glow:rgba(95,211,196,.35);
+    --spectrum:linear-gradient(90deg,#5fd3c4 0%,#8ebdef 32%,#8d8bd4 60%,#e09c4d 100%);
+  }
+  * { box-sizing:border-box; }
+  html { -webkit-text-size-adjust:100%; }
+  body { margin:0; min-height:100vh; color:var(--ink);
+    background:
+      radial-gradient(1200px 600px at 78% -8%, rgba(95,211,196,.06), transparent 60%),
+      radial-gradient(900px 620px at 12% 4%, rgba(141,139,212,.05), transparent 62%),
+      linear-gradient(180deg, var(--bg-tint), var(--bg) 40%);
+    background-attachment:fixed; background-color:var(--bg);
+    font:17px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    display:flex; align-items:center; }
+
+  .topline { position:fixed; top:0; left:0; right:0; height:2px; z-index:5;
+    background:var(--spectrum); opacity:.85; }
+
+  .wrap { position:relative; max-width:640px; margin:0 auto; padding:96px 24px 120px; }
+
+  .mark { width:60px; height:60px; margin-bottom:34px; display:block;
+    filter:drop-shadow(0 0 14px var(--accent-glow)); }
+
+  .eyebrow { font:13px/1 ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:5px; text-transform:uppercase; color:var(--accent);
+    display:inline-flex; align-items:center; gap:12px; }
+  .eyebrow::after { content:""; width:34px; height:1px; background:linear-gradient(90deg,var(--accent),transparent); }
+
+  h1 { font-size:2.5rem; font-weight:800; letter-spacing:-.02em; margin:.45em 0 0; line-height:1.1; }
+
+  .prism { height:3px; width:132px; margin:22px 0 26px; border-radius:2px;
+    background:var(--spectrum); box-shadow:0 0 20px rgba(141,139,212,.28); }
+
+  .lede { font-size:1.2rem; color:var(--dim); max-width:44ch; margin:0 0 40px; }
+
+  .back { display:inline-flex; align-items:center; gap:10px; text-decoration:none;
+    color:var(--accent); font-weight:600; letter-spacing:.01em;
+    transition:color .15s, gap .15s; }
+  .back:hover { color:var(--accent-strong); gap:14px; }
+  .back .arr { font:1rem/1 ui-monospace,Menlo,monospace; }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg:#f4f6f9; --bg-tint:#eef1f6;
+      --ink:#12151c; --dim:#535b6b; --faint:#7a8294;
+      --line:#e2e6ee;
+      --accent:#128677; --accent-strong:#0f7466; --accent-glow:rgba(18,134,119,.25);
+      --spectrum:linear-gradient(90deg,#1f9d8d 0%,#38669e 32%,#6d6bc0 60%,#c07a1f 100%);
+    }
+    body { background:
+      radial-gradient(1100px 560px at 80% -6%, rgba(18,134,119,.05), transparent 60%),
+      radial-gradient(820px 560px at 12% 3%, rgba(109,107,192,.05), transparent 62%),
+      linear-gradient(180deg, var(--bg-tint), var(--bg) 42%); }
+  }
+  @media (max-width:520px) {
+    h1 { font-size:2rem; }
+    .wrap { padding:64px 20px 90px; }
+    .prism { width:112px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .back { transition:none; }
+  }
+</style>
+</head>
+<body>
+<div class="topline" aria-hidden="true"></div>
+<div class="wrap">
+  <svg class="mark" viewBox="0 0 64 64" fill="none" aria-hidden="true" style="color:var(--accent)">
+    <g fill="none" stroke-linecap="round">
+      <circle cx="32" cy="32" r="26" stroke="currentColor" stroke-width="2"/>
+      <g stroke-width="3.4">
+        <path d="M44.73 19.27 A18 18 0 0 1 44.73 44.73" stroke="#8ebdef"/>
+        <path d="M44.73 44.73 A18 18 0 0 1 19.27 44.73" stroke="#e09c4d"/>
+        <path d="M19.27 44.73 A18 18 0 0 1 19.27 19.27" stroke="#8d8bd4"/>
+        <path d="M19.27 19.27 A18 18 0 0 1 44.73 19.27" stroke="#5fd3c4"/>
+      </g>
+      <circle cx="32" cy="32" r="10.5" stroke="currentColor" stroke-width="1.7"/>
+      <line x1="25" y1="25" x2="30" y2="30" stroke="currentColor" stroke-width="1.6"/>
+    </g>
+    <circle cx="32" cy="32" r="3.4" fill="currentColor"/>
+  </svg>
+
+  <div class="eyebrow">Error 404</div>
+  <h1>Nothing at this focal length.</h1>
+  <div class="prism" aria-hidden="true"></div>
+  <p class="lede">This address doesn't resolve to anything. The rest of the studio is still in focus.</p>
+
+  <a class="back" href="https://quietoptics.com/">
+    <span class="arr">←</span> Back to Quiet Optics
+  </a>
+</div>
+</body>
+</html>

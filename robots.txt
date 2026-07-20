@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://quietoptics.com/sitemap.xml
