@@ -8,32 +8,52 @@
 <meta name="description" content="Latent turns 'does this work?' into a measurable question: which of your habits actually improves your hit rate. Coming soon from Quiet Optics.">
 <style>
   :root {
-    --bg:#0b0b0e; --panel:#141419; --panel2:#1a1a21; --ink:#ebe9e4; --dim:#9a978f;
-    --faint:#63615b; --line:#26262f; --accent:#c9c6be;
-    --teal:#5fd3c4; --copper:#e09c4d; --latent:#8d8bd4;
+    /* Spectral instrument — dark (default); Latent leads with violet */
+    --bg:#0a0e16; --bg-tint:#0c1220;
+    --panel:#111725; --panel2:#161d2e;
+    --ink:#e9ecf2; --dim:#9aa3b4; --faint:#5c657a;
+    --line:#1e2636; --line2:#2a3346;
+    --latent:#8d8bd4;          /* Latent violet */
+    --accent:#8d8bd4;
+    --accent-glow:rgba(141,139,212,.34);
+    --spectrum:linear-gradient(90deg,#5fd3c4 0%,#8d8bd4 40%,#c78ea0 68%,#e09c4d 100%);
   }
   * { box-sizing:border-box; }
   html { -webkit-text-size-adjust:100%; }
-  body { margin:0; background:var(--bg); color:var(--ink);
+  body { margin:0; color:var(--ink);
+    background:
+      radial-gradient(1200px 600px at 78% -8%, rgba(95,211,196,.06), transparent 60%),
+      radial-gradient(900px 620px at 12% 4%, rgba(141,139,212,.05), transparent 62%),
+      linear-gradient(180deg, var(--bg-tint), var(--bg) 40%);
+    background-attachment:fixed; background-color:var(--bg);
     font:17px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     -webkit-font-smoothing:antialiased; }
-  .wrap { max-width:760px; margin:0 auto; padding:96px 24px 120px; }
 
-  .mark { width:56px; height:56px; margin-bottom:34px; }
+  .topline { position:fixed; top:0; left:0; right:0; height:2px; z-index:5;
+    background:var(--spectrum); opacity:.85; }
+
+  .wrap { position:relative; max-width:760px; margin:0 auto; padding:96px 24px 120px; }
+
+  .mark { width:60px; height:60px; margin-bottom:32px; display:block;
+    filter:drop-shadow(0 0 14px var(--accent-glow)); }
   .eyebrow { font:13px/1 ui-monospace,SFMono-Regular,Menlo,monospace;
-    letter-spacing:5px; text-transform:uppercase; color:var(--latent); }
-  h1 { font-size:2.7rem; font-weight:800; letter-spacing:-.02em; margin:.5em 0 .3em; line-height:1.08; }
-  .lede { font-size:1.24rem; color:var(--dim); max-width:46ch; }
+    letter-spacing:5px; text-transform:uppercase; color:var(--latent);
+    display:inline-flex; align-items:center; gap:12px; }
+  .eyebrow::after { content:""; width:34px; height:1px; background:linear-gradient(90deg,var(--latent),transparent); }
+  h1 { font-size:2.7rem; font-weight:800; letter-spacing:-.02em; margin:.5em 0 0; line-height:1.08; }
+  .prism { height:3px; width:132px; margin:22px 0 26px; border-radius:2px;
+    background:var(--spectrum); box-shadow:0 0 20px rgba(141,139,212,.28); }
+  .lede { font-size:1.24rem; color:var(--dim); max-width:46ch; margin:0; }
   strong { color:var(--ink); font-weight:600; }
   .num { font-variant-numeric:tabular-nums; }
 
   .back { display:inline-block; margin-bottom:40px; text-decoration:none;
     font:12px/1 ui-monospace,Menlo,monospace; letter-spacing:1.5px; text-transform:uppercase;
-    color:var(--faint); }
-  .back:hover { color:var(--ink); }
+    color:var(--faint); transition:color .15s; }
+  .back:hover { color:var(--latent); }
 
   section { margin-top:64px; }
-  h2 { color:var(--ink); font-size:.85rem; font-weight:600;
+  h2 { color:var(--latent); font-size:.85rem; font-weight:600;
     letter-spacing:2px; text-transform:uppercase; margin:0 0 1em; }
   h2 .idx { color:var(--latent); margin-right:.9em; }
   p { color:var(--dim); }
@@ -44,7 +64,7 @@
   .step { display:flex; gap:18px; padding:20px 0; border-top:1px solid var(--line); }
   .step:first-child { border-top:none; }
   .step-n { counter-increment:step; flex:0 0 auto; width:30px; height:30px; border-radius:50%;
-    border:1px solid var(--line); display:flex; align-items:center; justify-content:center;
+    border:1px solid var(--line2); display:flex; align-items:center; justify-content:center;
     font:13px/1 ui-monospace,Menlo,monospace; color:var(--latent); }
   .step-n::before { content:counter(step); }
   .step-b { flex:1; min-width:0; }
@@ -58,8 +78,8 @@
   .feat .k { color:var(--ink); font-weight:600; flex:0 0 auto; width:150px; }
   .feat .k::before { content:"·"; color:var(--latent); margin-right:.55em; }
 
-  .card { background:var(--panel); border:1px solid var(--line); border-radius:14px;
-    padding:20px 22px; margin-top:8px; }
+  .card { background:var(--panel); border:1px solid var(--line); border-left:2px solid var(--latent);
+    border-radius:14px; padding:20px 22px; margin-top:8px; }
   .card .lift { font-size:1.02rem; color:var(--dim); }
   .card .lift b { color:var(--ink); }
   .card .plus { color:var(--latent); font-weight:700; }
@@ -67,25 +87,42 @@
   .status { display:inline-flex; align-items:center; gap:10px; margin-top:8px;
     font:12px/1 ui-monospace,Menlo,monospace; letter-spacing:1.5px; text-transform:uppercase;
     color:var(--faint); }
-  .status .dot { width:8px; height:8px; border-radius:50%; background:var(--latent); }
+  .status .dot { width:8px; height:8px; border-radius:50%; background:var(--latent);
+    box-shadow:0 0 0 3px var(--accent-glow); }
 
-  footer { margin-top:88px; padding-top:28px; border-top:1px solid var(--line);
+  footer { margin-top:88px; padding-top:28px; position:relative;
     font:13px/1.8 ui-monospace,Menlo,monospace; color:var(--faint); }
-  footer a { color:var(--dim); text-decoration:none; }
-  footer a:hover { color:var(--ink); }
+  footer::before { content:""; position:absolute; top:0; left:0; width:132px; height:2px;
+    border-radius:2px; background:var(--spectrum); opacity:.7; }
+  footer::after { content:""; position:absolute; top:0; left:0; right:0; height:1px;
+    background:var(--line); z-index:-1; }
+  footer a { color:var(--dim); text-decoration:none; transition:color .15s; }
+  footer a:hover { color:var(--latent); }
 
   @media (prefers-color-scheme: light) {
-    :root { --bg:#fbfbfa; --panel:#fff; --panel2:#f5f5f3; --ink:#17171b;
-      --dim:#5b5952; --faint:#6f6d66; --line:#e7e6e2; --accent:#3a3a3a; --latent:#5f5da8; }
+    :root {
+      --bg:#f4f6f9; --bg-tint:#eef1f6;
+      --panel:#ffffff; --panel2:#f6f8fb;
+      --ink:#12151c; --dim:#535b6b; --faint:#7a8294;
+      --line:#e2e6ee; --line2:#d2d8e4;
+      --latent:#5b58b8; --accent:#5b58b8; --accent-glow:rgba(91,88,184,.22);
+      --spectrum:linear-gradient(90deg,#1f9d8d 0%,#6d6bc0 42%,#b56d84 70%,#c07a1f 100%);
+    }
+    body { background:
+      radial-gradient(1100px 560px at 80% -6%, rgba(18,134,119,.05), transparent 60%),
+      radial-gradient(820px 560px at 12% 3%, rgba(109,107,192,.05), transparent 62%),
+      linear-gradient(180deg, var(--bg-tint), var(--bg) 42%); }
   }
   @media (max-width:520px) {
     h1 { font-size:2.1rem; } .wrap { padding:64px 20px 90px; }
+    .prism { width:112px; }
     .feat .k { width:auto; flex:1 1 auto; }
     .feat li { flex-direction:column; gap:3px; }
   }
 </style>
 </head>
 <body>
+<div class="topline" aria-hidden="true"></div>
 <div class="wrap">
   <a class="back" href="../">← Quiet Optics</a>
 
@@ -98,6 +135,7 @@
 
   <div class="eyebrow">Latent</div>
   <h1>Manifestation with a scoreboard.</h1>
+  <div class="prism" aria-hidden="true"></div>
   <p class="lede">Set an intention, commit up front to how you'll grade it and how likely it honestly was, tag your practices — then find out whether your outcomes beat your own expectations, and which habits actually move your hit rate.</p>
 
   <section>

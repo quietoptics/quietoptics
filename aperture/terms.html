@@ -8,18 +8,29 @@
 <meta name="description" content="Terms of use for the Aperture iOS app from Quiet Optics.">
 <style>
   :root {
-    --bg:#0b0b0e; --panel:#141419; --panel2:#1a1a21; --ink:#ebe9e4; --dim:#9a978f;
-    --faint:#63615b; --line:#26262f; --accent:#c9c6be;
-    --teal:#5fd3c4; --copper:#e09c4d; --link:#5fd3c4;
+    /* Spectral instrument — dark (default) */
+    --bg:#0a0e16; --bg-tint:#0c1220; --panel:#111725; --panel2:#161d2e;
+    --ink:#e9ecf2; --dim:#9aa3b4; --faint:#5c657a; --line:#1e2636; --line2:#2a3346;
+    --accent:#5fd3c4; --teal:#5fd3c4; --link:#5fd3c4;
+    --spectrum:linear-gradient(90deg,#5fd3c4 0%,#8d8bd4 40%,#c78ea0 68%,#e09c4d 100%);
   }
   * { box-sizing:border-box; }
   html { -webkit-text-size-adjust:100%; }
-  body { margin:0; background:var(--bg); color:var(--ink);
+  body { margin:0; color:var(--ink);
+    background:
+      radial-gradient(1200px 600px at 78% -8%, rgba(95,211,196,.06), transparent 60%),
+      radial-gradient(900px 620px at 12% 4%, rgba(141,139,212,.05), transparent 62%),
+      linear-gradient(180deg, var(--bg-tint), var(--bg) 40%);
+    background-attachment:fixed; background-color:var(--bg);
     font:17px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     -webkit-font-smoothing:antialiased; }
-  .wrap { max-width:720px; margin:0 auto; padding:72px 24px 110px; }
+  .topline { position:fixed; top:0; left:0; right:0; height:2px; z-index:5;
+    background:var(--spectrum); opacity:.85; }
+  .wrap { position:relative; max-width:720px; margin:0 auto; padding:72px 24px 110px; }
   .eyebrow { font:13px/1 ui-monospace,SFMono-Regular,Menlo,monospace;
-    letter-spacing:4px; text-transform:uppercase; color:var(--teal); }
+    letter-spacing:4px; text-transform:uppercase; color:var(--teal);
+    display:inline-flex; align-items:center; gap:12px; }
+  .eyebrow::after { content:""; width:30px; height:1px; background:linear-gradient(90deg,var(--teal),transparent); }
   h1 { font-size:2.4rem; font-weight:800; letter-spacing:-.02em; margin:.4em 0 .15em; line-height:1.1; }
   .date { color:var(--faint); font:13px/1.5 ui-monospace,Menlo,monospace; margin-bottom:2.4em; }
   h2 { font-size:1.16rem; font-weight:700; margin:2em 0 .5em; color:var(--ink); letter-spacing:-.01em; }
@@ -32,17 +43,29 @@
   .nav { margin-top:2.6em; padding-top:26px; border-top:1px solid var(--line);
     font:13px/1.9 ui-monospace,Menlo,monospace; color:var(--faint); }
   .nav a { color:var(--dim); margin-right:1.5em; text-decoration:none; }
-  .nav a:hover { color:var(--ink); }
-  footer { margin-top:32px; font:13px/1.8 ui-monospace,Menlo,monospace; color:var(--faint); }
-  footer a { color:var(--dim); text-decoration:none; } footer a:hover { color:var(--ink); }
+  .nav a:hover { color:var(--accent); }
+  footer { margin-top:32px; position:relative; padding-top:22px;
+    font:13px/1.8 ui-monospace,Menlo,monospace; color:var(--faint); }
+  footer::before { content:""; position:absolute; top:0; left:0; width:110px; height:2px;
+    border-radius:2px; background:var(--spectrum); opacity:.7; }
+  footer a { color:var(--dim); text-decoration:none; } footer a:hover { color:var(--accent); }
   @media (prefers-color-scheme: light) {
-    :root { --bg:#fbfbfa; --panel:#fff; --panel2:#f5f5f3; --ink:#17171b;
-      --dim:#5b5952; --faint:#6f6d66; --line:#e7e6e2; --accent:#3a3a3a; --link:#0d9b82; --teal:#0d9b82; }
+    :root {
+      --bg:#f4f6f9; --bg-tint:#eef1f6; --panel:#ffffff; --panel2:#f6f8fb;
+      --ink:#12151c; --dim:#535b6b; --faint:#7a8294; --line:#e2e6ee; --line2:#d2d8e4;
+      --accent:#128677; --teal:#128677; --link:#0f7466;
+      --spectrum:linear-gradient(90deg,#1f9d8d 0%,#6d6bc0 42%,#b56d84 70%,#c07a1f 100%);
+    }
+    body { background:
+      radial-gradient(1100px 560px at 80% -6%, rgba(18,134,119,.05), transparent 60%),
+      radial-gradient(820px 560px at 12% 3%, rgba(109,107,192,.05), transparent 62%),
+      linear-gradient(180deg, var(--bg-tint), var(--bg) 42%); }
   }
   @media (max-width:520px) { h1 { font-size:2rem; } .wrap { padding:56px 20px 80px; } }
 </style>
 </head>
 <body>
+<div class="topline" aria-hidden="true"></div>
 <div class="wrap">
   <div class="eyebrow">Aperture</div>
   <h1>Terms of Use</h1>

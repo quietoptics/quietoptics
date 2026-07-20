@@ -8,37 +8,58 @@
 <meta name="description" content="Aperture hides the target, you record your impressions blind, and it scores your perception — not whether you guessed the name. On-device, private. Coming soon.">
 <style>
   :root {
-    --bg:#0b0b0e; --panel:#141419; --panel2:#1a1a21; --ink:#ebe9e4; --dim:#9a978f;
-    --faint:#63615b; --line:#26262f; --accent:#5fd3c4;
-    --teal:#5fd3c4; --copper:#e09c4d;
+    /* Spectral instrument — dark (default); Aperture leads with studio teal */
+    --bg:#0a0e16; --bg-tint:#0c1220;
+    --panel:#111725; --panel2:#161d2e;
+    --ink:#e9ecf2; --dim:#9aa3b4; --faint:#5c657a;
+    --line:#1e2636; --line2:#2a3346;
+    --accent:#5fd3c4; --accent-strong:#7fe0d3;
+    --accent-glow:rgba(95,211,196,.35);
+    --teal:#5fd3c4;
+    --spectrum:linear-gradient(90deg,#5fd3c4 0%,#8d8bd4 40%,#c78ea0 68%,#e09c4d 100%);
   }
   * { box-sizing:border-box; }
   html { -webkit-text-size-adjust:100%; }
-  body { margin:0; background:var(--bg); color:var(--ink);
+  body { margin:0; color:var(--ink);
+    background:
+      radial-gradient(1200px 600px at 78% -8%, rgba(95,211,196,.06), transparent 60%),
+      radial-gradient(900px 620px at 12% 4%, rgba(141,139,212,.05), transparent 62%),
+      linear-gradient(180deg, var(--bg-tint), var(--bg) 40%);
+    background-attachment:fixed; background-color:var(--bg);
     font:17px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     -webkit-font-smoothing:antialiased; }
-  .wrap { max-width:760px; margin:0 auto; padding:96px 24px 120px; }
 
-  .mark { width:56px; height:56px; margin-bottom:34px; }
+  .topline { position:fixed; top:0; left:0; right:0; height:2px; z-index:5;
+    background:var(--spectrum); opacity:.85; }
+
+  .wrap { position:relative; max-width:760px; margin:0 auto; padding:96px 24px 120px; }
+
+  .mark { width:60px; height:60px; margin-bottom:32px; display:block;
+    filter:drop-shadow(0 0 14px var(--accent-glow)); }
   .eyebrow { font:13px/1 ui-monospace,SFMono-Regular,Menlo,monospace;
-    letter-spacing:5px; text-transform:uppercase; color:var(--dim); }
-  h1 { font-size:2.7rem; font-weight:800; letter-spacing:-.02em; margin:.5em 0 .3em; line-height:1.08; }
-  .lede { font-size:1.24rem; color:var(--dim); max-width:40ch; }
+    letter-spacing:5px; text-transform:uppercase; color:var(--accent);
+    display:inline-flex; align-items:center; gap:12px; }
+  .eyebrow::after { content:""; width:34px; height:1px; background:linear-gradient(90deg,var(--accent),transparent); }
+  h1 { font-size:2.7rem; font-weight:800; letter-spacing:-.02em; margin:.5em 0 0; line-height:1.08; }
+  .prism { height:3px; width:132px; margin:22px 0 26px; border-radius:2px;
+    background:var(--spectrum); box-shadow:0 0 20px rgba(141,139,212,.28); }
+  .lede { font-size:1.24rem; color:var(--dim); max-width:40ch; margin:0; }
   strong { color:var(--ink); font-weight:600; }
 
   .backlink { display:inline-flex; align-items:center; gap:8px; text-decoration:none;
     font:12px/1 ui-monospace,Menlo,monospace; letter-spacing:2px; text-transform:uppercase;
     color:var(--faint); margin-bottom:40px; transition:color .15s; }
-  .backlink:hover { color:var(--ink); }
+  .backlink:hover { color:var(--accent); }
 
   .status-chip { display:inline-flex; align-items:center; gap:9px; margin-top:26px;
     background:var(--panel); border:1px solid var(--line); border-radius:999px;
     padding:8px 16px; font:12px/1 ui-monospace,Menlo,monospace;
     letter-spacing:1.5px; text-transform:uppercase; color:var(--dim); }
-  .status-chip .dot { width:8px; height:8px; border-radius:50%; background:var(--teal); }
+  .status-chip .dot { width:8px; height:8px; border-radius:50%; background:var(--teal);
+    box-shadow:0 0 0 3px var(--accent-glow); }
 
   section { margin-top:72px; }
-  section h2 { color:var(--ink); font-size:.85rem; font-weight:600;
+  section h2 { color:var(--accent); font-size:.85rem; font-weight:600;
     letter-spacing:2px; text-transform:uppercase; margin:0 0 1em; }
   section p { color:var(--dim); font-size:1.06rem; margin:0 0 1em; }
   section p:last-child { margin-bottom:0; }
@@ -59,8 +80,9 @@
   .features { list-style:none; margin:0; padding:0;
     display:flex; flex-direction:column; gap:16px; }
   .feature { display:flex; gap:16px; align-items:flex-start;
-    background:var(--panel); border:1px solid var(--line);
-    border-radius:14px; padding:20px 22px; }
+    background:var(--panel); border:1px solid var(--line); border-left:2px solid var(--line2);
+    border-radius:14px; padding:20px 22px; transition:border-color .18s, background .18s; }
+  .feature:hover { background:var(--panel2); border-color:var(--line2); border-left-color:var(--accent); }
   .feature .tick { flex:0 0 auto; margin-top:3px; color:var(--teal); }
   .feature-body { flex:1; min-width:0; }
   .feature-name { color:var(--ink); font-weight:600; }
@@ -68,11 +90,11 @@
 
   .pill { display:inline-block; font:11px/1 ui-monospace,Menlo,monospace;
     letter-spacing:1px; text-transform:uppercase; color:var(--faint);
-    border:1px solid var(--line); border-radius:6px; padding:3px 7px;
+    border:1px solid var(--line2); border-radius:6px; padding:3px 7px;
     margin-left:8px; vertical-align:2px; }
 
-  .privacy { background:var(--panel); border:1px solid var(--line);
-    border-radius:16px; padding:26px 28px; }
+  .privacy { background:var(--panel); border:1px solid var(--line); border-left:2px solid var(--accent);
+    border-radius:14px; padding:26px 28px; }
   .privacy p { color:var(--dim); }
 
   .close { margin-top:72px; }
@@ -80,21 +102,40 @@
     letter-spacing:-.01em; }
   .close .sub { color:var(--dim); margin-top:.5em; }
 
-  footer { margin-top:80px; padding-top:28px; border-top:1px solid var(--line);
+  footer { margin-top:80px; padding-top:28px; position:relative;
     font:13px/1.8 ui-monospace,Menlo,monospace; color:var(--faint); }
-  footer a { color:var(--dim); text-decoration:none; }
-  footer a:hover { color:var(--ink); }
+  footer::before { content:""; position:absolute; top:0; left:0; width:132px; height:2px;
+    border-radius:2px; background:var(--spectrum); opacity:.7; }
+  footer::after { content:""; position:absolute; top:0; left:0; right:0; height:1px;
+    background:var(--line); z-index:-1; }
+  footer a { color:var(--dim); text-decoration:none; transition:color .15s; }
+  footer a:hover { color:var(--accent); }
   .footer-links { margin-bottom:10px; }
   .footer-links a { margin-right:18px; }
 
   @media (prefers-color-scheme: light) {
-    :root { --bg:#fbfbfa; --panel:#fff; --panel2:#f5f5f3; --ink:#17171b;
-      --dim:#5b5952; --faint:#6f6d66; --line:#e7e6e2; --accent:#0d9b82; --teal:#0d9b82; }
+    :root {
+      --bg:#f4f6f9; --bg-tint:#eef1f6;
+      --panel:#ffffff; --panel2:#f6f8fb;
+      --ink:#12151c; --dim:#535b6b; --faint:#7a8294;
+      --line:#e2e6ee; --line2:#d2d8e4;
+      --accent:#128677; --accent-strong:#0f7466;
+      --accent-glow:rgba(18,134,119,.25);
+      --teal:#0f8072;
+      --spectrum:linear-gradient(90deg,#1f9d8d 0%,#6d6bc0 42%,#b56d84 70%,#c07a1f 100%);
+    }
+    body { background:
+      radial-gradient(1100px 560px at 80% -6%, rgba(18,134,119,.05), transparent 60%),
+      radial-gradient(820px 560px at 12% 3%, rgba(109,107,192,.05), transparent 62%),
+      linear-gradient(180deg, var(--bg-tint), var(--bg) 42%); }
   }
-  @media (max-width:520px) { h1 { font-size:2.1rem; } .wrap { padding:64px 20px 90px; } }
+  @media (max-width:520px) { h1 { font-size:2.1rem; } .wrap { padding:64px 20px 90px; }
+    .prism { width:112px; } }
+  @media (prefers-reduced-motion: reduce) { .feature { transition:none; } }
 </style>
 </head>
 <body>
+<div class="topline" aria-hidden="true"></div>
 <div class="wrap">
 
   <a class="backlink" href="../">← Quiet Optics</a>
@@ -110,6 +151,7 @@
 
   <div class="eyebrow">Aperture</div>
   <h1>Practice remote viewing honestly.</h1>
+  <div class="prism" aria-hidden="true"></div>
   <p class="lede">The app hides the target. You record your impressions blind. Then it scores your perception — not whether you guessed the name.</p>
 
   <div class="status-chip"><span class="dot"></span>Coming soon to the App Store</div>
