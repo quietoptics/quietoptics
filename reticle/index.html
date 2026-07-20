@@ -6,6 +6,8 @@
 <meta name="color-scheme" content="dark light">
 <title>Reticle — does your 80% mean 80%?</title>
 <meta name="description" content="Reticle is a calibration journal: log a falsifiable claim with a confidence percentage, resolve it hit or miss, and let pure math tell you whether your confidence tracks reality.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <style>
   :root {
     /* Spectral instrument — dark (default); Reticle leads with copper */
@@ -16,7 +18,7 @@
     --app:#e09c4d;             /* Reticle copper */
     --accent:#e09c4d;
     --accent-glow:rgba(224,156,77,.32);
-    --spectrum:linear-gradient(90deg,#5fd3c4 0%,#8d8bd4 40%,#c78ea0 68%,#e09c4d 100%);
+    --spectrum:linear-gradient(90deg,#5fd3c4 0%,#8ebdef 32%,#8d8bd4 60%,#e09c4d 100%);
   }
   * { box-sizing:border-box; }
   html { -webkit-text-size-adjust:100%; }
@@ -113,7 +115,7 @@
       --ink:#12151c; --dim:#535b6b; --faint:#7a8294;
       --line:#e2e6ee; --line2:#d2d8e4;
       --app:#9c5c14; --accent:#9c5c14; --accent-glow:rgba(156,92,20,.22);
-      --spectrum:linear-gradient(90deg,#1f9d8d 0%,#6d6bc0 42%,#b56d84 70%,#c07a1f 100%);
+      --spectrum:linear-gradient(90deg,#1f9d8d 0%,#38669e 32%,#6d6bc0 60%,#c07a1f 100%);
     }
     body { background:
       radial-gradient(1100px 560px at 80% -6%, rgba(18,134,119,.05), transparent 60%),
@@ -134,12 +136,8 @@
 <div class="wrap">
   <a class="back" href="../">← Quiet Optics</a>
 
-  <svg class="mark" viewBox="0 0 56 56" fill="none" aria-hidden="true">
-    <circle cx="28" cy="28" r="23" stroke="var(--app)" stroke-width="1.5" opacity=".55"/>
-    <circle cx="28" cy="28" r="12" stroke="var(--app)" stroke-width="2"/>
-    <path d="M28 3v13M28 40v13M3 28h13M40 28h13" stroke="var(--app)" stroke-width="2"/>
-    <circle cx="28" cy="28" r="2.2" fill="var(--app)"/>
-  </svg>
+  <img class="mark" src="../assets/icons/reticle.png" alt="" width="64" height="64"
+    style="width:64px;height:64px;border-radius:14px;border:1px solid var(--line);filter:none;">
 
   <div class="eyebrow">Reticle</div>
   <h1>Find out if your 80% means 80%.</h1>

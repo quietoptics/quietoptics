@@ -6,6 +6,8 @@
 <meta name="color-scheme" content="dark light">
 <title>Quiet Optics — instruments for the mind</title>
 <meta name="description" content="Quiet Optics builds precise, private iPhone tools for measuring and training the mind.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <style>
   :root {
     /* Spectral instrument — dark (default) */
@@ -23,10 +25,10 @@
     --accent-glow:rgba(95,211,196,.35);
     /* spectrum stops (app accents) */
     --s-teal:#5fd3c4;
+    --s-blue:#8ebdef;
     --s-violet:#8d8bd4;
-    --s-rose:#c78ea0;
     --s-copper:#e09c4d;
-    --spectrum:linear-gradient(90deg,#5fd3c4 0%,#8d8bd4 40%,#c78ea0 68%,#e09c4d 100%);
+    --spectrum:linear-gradient(90deg,#5fd3c4 0%,#8ebdef 32%,#8d8bd4 60%,#e09c4d 100%);
   }
   * { box-sizing:border-box; }
   html { -webkit-text-size-adjust:100%; }
@@ -83,8 +85,8 @@
     box-shadow:0 0 0 1px var(--app-line,transparent), 0 10px 30px -18px var(--app);
     transform:translateY(-1px); }
   .app:hover::before { opacity:1; }
-  .dot { width:11px; height:11px; border-radius:50%; margin-top:9px; flex:0 0 auto;
-    background:var(--app); box-shadow:0 0 0 3px var(--app-halo,transparent); }
+  .icon { width:44px; height:44px; border-radius:10px; margin-top:2px; flex:0 0 auto;
+    display:block; border:1px solid var(--line); }
   .app-body { position:relative; flex:1; min-width:0; }
   .app-name { color:var(--ink); font-size:1.18rem; font-weight:700; }
   .app-tag { color:var(--dim); font-size:.98rem; margin-top:2px; }
@@ -98,7 +100,7 @@
   .app.aperture   { --app:#5fd3c4; --app-wash:rgba(95,211,196,.08);  --app-halo:rgba(95,211,196,.14); --app-line:rgba(95,211,196,.4); }
   .app.reticle    { --app:#e09c4d; --app-wash:rgba(224,156,77,.08);  --app-halo:rgba(224,156,77,.14); --app-line:rgba(224,156,77,.4); }
   .app.latent     { --app:#8d8bd4; --app-wash:rgba(141,139,212,.09); --app-halo:rgba(141,139,212,.15); --app-line:rgba(141,139,212,.42); }
-  .app.rangefinder{ --app:#c78ea0; --app-wash:rgba(199,142,160,.09); --app-halo:rgba(199,142,160,.15); --app-line:rgba(199,142,160,.42); }
+  .app.rangefinder{ --app:#8ebdef; --app-wash:rgba(142,189,239,.09); --app-halo:rgba(142,189,239,.15); --app-line:rgba(142,189,239,.42); }
 
   .about { margin-top:72px; color:var(--dim); font-size:1.02rem; padding-top:20px;
     border-top:1px solid var(--line); }
@@ -129,7 +131,7 @@
       --accent-strong:#0f7466;
       --accent-glow:rgba(18,134,119,.25);
       /* darkened spectrum so a colored rule still reads on paper */
-      --spectrum:linear-gradient(90deg,#1f9d8d 0%,#6d6bc0 42%,#b56d84 70%,#c07a1f 100%);
+      --spectrum:linear-gradient(90deg,#1f9d8d 0%,#38669e 32%,#6d6bc0 60%,#c07a1f 100%);
     }
     body { background:
       radial-gradient(1100px 560px at 80% -6%, rgba(18,134,119,.05), transparent 60%),
@@ -138,7 +140,7 @@
     .app.aperture   { --app:#0f8072; --app-wash:rgba(18,134,119,.07);  --app-halo:rgba(18,134,119,.14); --app-line:rgba(18,134,119,.35); }
     .app.reticle    { --app:#9c5c14; --app-wash:rgba(156,92,20,.07);  --app-halo:rgba(156,92,20,.14); --app-line:rgba(156,92,20,.35); }
     .app.latent     { --app:#5b58b8; --app-wash:rgba(91,88,184,.07);   --app-halo:rgba(91,88,184,.15); --app-line:rgba(91,88,184,.35); }
-    .app.rangefinder{ --app:#a75e73; --app-wash:rgba(167,94,115,.07);  --app-halo:rgba(167,94,115,.15); --app-line:rgba(167,94,115,.35); }
+    .app.rangefinder{ --app:#38669e; --app-wash:rgba(56,102,158,.07);  --app-halo:rgba(56,102,158,.15); --app-line:rgba(56,102,158,.35); }
   }
 
   @media (max-width:520px) {
@@ -155,17 +157,19 @@
 <body>
 <div class="topline" aria-hidden="true"></div>
 <div class="wrap">
-  <svg class="mark" viewBox="0 0 56 56" fill="none" aria-hidden="true">
-    <defs>
-      <radialGradient id="glass" cx="42%" cy="36%" r="72%">
-        <stop offset="0" stop-color="#7fe0d3"/>
-        <stop offset="1" stop-color="#5fd3c4"/>
-      </radialGradient>
-    </defs>
-    <circle cx="28" cy="28" r="24" stroke="var(--accent)" stroke-width="1.5" opacity=".45"/>
-    <circle cx="28" cy="28" r="15" stroke="url(#glass)" stroke-width="2"/>
-    <path d="M28 2v14M28 40v14M2 28h14M40 28h14" stroke="var(--accent)" stroke-width="2"/>
-    <circle cx="28" cy="28" r="2.4" fill="var(--accent)"/>
+  <svg class="mark" viewBox="0 0 64 64" fill="none" aria-hidden="true" style="color:var(--accent)">
+    <g fill="none" stroke-linecap="round">
+      <circle cx="32" cy="32" r="26" stroke="currentColor" stroke-width="2"/>
+      <g stroke-width="3.4">
+        <path d="M44.73 19.27 A18 18 0 0 1 44.73 44.73" stroke="#8ebdef"/>
+        <path d="M44.73 44.73 A18 18 0 0 1 19.27 44.73" stroke="#e09c4d"/>
+        <path d="M19.27 44.73 A18 18 0 0 1 19.27 19.27" stroke="#8d8bd4"/>
+        <path d="M19.27 19.27 A18 18 0 0 1 44.73 19.27" stroke="#5fd3c4"/>
+      </g>
+      <circle cx="32" cy="32" r="10.5" stroke="currentColor" stroke-width="1.7"/>
+      <line x1="25" y1="25" x2="30" y2="30" stroke="currentColor" stroke-width="1.6"/>
+    </g>
+    <circle cx="32" cy="32" r="3.4" fill="currentColor"/>
   </svg>
 
   <div class="eyebrow">Quiet Optics</div>
@@ -183,7 +187,7 @@
 
   <div class="apps">
     <a class="app aperture" href="aperture/">
-      <span class="dot"></span>
+      <img class="icon" src="assets/icons/aperture.png" alt="" width="44" height="44" loading="lazy">
       <span class="app-body">
         <span class="app-name">Aperture</span>
         <div class="app-tag">Blind controlled remote viewing — practice and honest scoring.</div>
@@ -193,7 +197,7 @@
     </a>
 
     <a class="app reticle" href="reticle/">
-      <span class="dot"></span>
+      <img class="icon" src="assets/icons/reticle.png" alt="" width="44" height="44" loading="lazy">
       <span class="app-body">
         <span class="app-name">Reticle</span>
         <div class="app-tag">A prediction journal that scores your real calibration — see if your 80% means 80%.</div>
@@ -203,7 +207,7 @@
     </a>
 
     <a class="app latent" href="latent/">
-      <span class="dot"></span>
+      <img class="icon" src="assets/icons/latent.png" alt="" width="44" height="44" loading="lazy">
       <span class="app-body">
         <span class="app-name">Latent</span>
         <div class="app-tag">An intention tracker that scores honestly instead of cheerleading.</div>
@@ -213,7 +217,7 @@
     </a>
 
     <a class="app rangefinder" href="rangefinder/">
-      <span class="dot"></span>
+      <img class="icon" src="assets/icons/rangefinder.png" alt="" width="44" height="44" loading="lazy">
       <span class="app-body">
         <span class="app-name">Rangefinder</span>
         <div class="app-tag">A precognitive impression journal with outcome-anchored scoring.</div>

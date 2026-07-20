@@ -6,17 +6,19 @@
 <meta name="color-scheme" content="dark light">
 <title>Rangefinder — seal a hunch before the event · Quiet Optics</title>
 <meta name="description" content="Log an impression before it happens, seal what would confirm it, then resolve later and let the math — not your memory — tell you which of your channels actually land. On-device. Coming soon.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <style>
   :root {
-    /* Spectral instrument — dark (default); Rangefinder leads with rose */
+    /* Spectral instrument — dark (default); Rangefinder leads with steel-blue */
     --bg:#0a0e16; --bg-tint:#0c1220;
     --panel:#111725; --panel2:#161d2e;
     --ink:#e9ecf2; --dim:#9aa3b4; --faint:#5c657a;
     --line:#1e2636; --line2:#2a3346;
-    --rangefinder:#c78ea0;     /* Rangefinder rose */
+    --rangefinder:#8ebdef;     /* Rangefinder steel-blue */
     --accent:var(--rangefinder);
-    --accent-glow:rgba(199,142,160,.34);
-    --spectrum:linear-gradient(90deg,#5fd3c4 0%,#8d8bd4 40%,#c78ea0 68%,#e09c4d 100%);
+    --accent-glow:rgba(142,189,239,.34);
+    --spectrum:linear-gradient(90deg,#5fd3c4 0%,#8ebdef 32%,#8d8bd4 60%,#e09c4d 100%);
   }
   * { box-sizing:border-box; }
   html { -webkit-text-size-adjust:100%; }
@@ -113,8 +115,8 @@
       --panel:#ffffff; --panel2:#f6f8fb;
       --ink:#12151c; --dim:#535b6b; --faint:#7a8294;
       --line:#e2e6ee; --line2:#d2d8e4;
-      --rangefinder:#8f4257; --accent-glow:rgba(143,66,87,.22);
-      --spectrum:linear-gradient(90deg,#1f9d8d 0%,#6d6bc0 42%,#b56d84 70%,#c07a1f 100%);
+      --rangefinder:#38669e; --accent-glow:rgba(56,102,158,.22);
+      --spectrum:linear-gradient(90deg,#1f9d8d 0%,#38669e 32%,#6d6bc0 60%,#c07a1f 100%);
     }
     body { background:
       radial-gradient(1100px 560px at 80% -6%, rgba(18,134,119,.05), transparent 60%),
@@ -130,12 +132,8 @@
 <body>
 <div class="topline" aria-hidden="true"></div>
 <div class="wrap">
-  <svg class="mark" viewBox="0 0 56 56" fill="none" aria-hidden="true">
-    <circle cx="28" cy="28" r="24" stroke="var(--accent)" stroke-width="1.5" opacity=".5"/>
-    <circle cx="28" cy="28" r="15" stroke="var(--accent)" stroke-width="2"/>
-    <path d="M28 6v9M28 41v9M6 28h9M41 28h9" stroke="var(--accent)" stroke-width="2"/>
-    <circle cx="28" cy="28" r="2.4" fill="var(--accent)"/>
-  </svg>
+  <img class="mark" src="../assets/icons/rangefinder.png" alt="" width="64" height="64"
+    style="width:64px;height:64px;border-radius:14px;border:1px solid var(--line);filter:none;">
 
   <div class="eyebrow">Rangefinder</div>
   <h1>Seal a hunch before the event.</h1>

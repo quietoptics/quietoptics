@@ -6,6 +6,8 @@
 <meta name="color-scheme" content="dark light">
 <title>Latent — manifestation with a scoreboard</title>
 <meta name="description" content="Latent turns 'does this work?' into a measurable question: which of your habits actually improves your hit rate. Coming soon from Quiet Optics.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <style>
   :root {
     /* Spectral instrument — dark (default); Latent leads with violet */
@@ -16,7 +18,7 @@
     --latent:#8d8bd4;          /* Latent violet */
     --accent:#8d8bd4;
     --accent-glow:rgba(141,139,212,.34);
-    --spectrum:linear-gradient(90deg,#5fd3c4 0%,#8d8bd4 40%,#c78ea0 68%,#e09c4d 100%);
+    --spectrum:linear-gradient(90deg,#5fd3c4 0%,#8ebdef 32%,#8d8bd4 60%,#e09c4d 100%);
   }
   * { box-sizing:border-box; }
   html { -webkit-text-size-adjust:100%; }
@@ -106,7 +108,7 @@
       --ink:#12151c; --dim:#535b6b; --faint:#7a8294;
       --line:#e2e6ee; --line2:#d2d8e4;
       --latent:#5b58b8; --accent:#5b58b8; --accent-glow:rgba(91,88,184,.22);
-      --spectrum:linear-gradient(90deg,#1f9d8d 0%,#6d6bc0 42%,#b56d84 70%,#c07a1f 100%);
+      --spectrum:linear-gradient(90deg,#1f9d8d 0%,#38669e 32%,#6d6bc0 60%,#c07a1f 100%);
     }
     body { background:
       radial-gradient(1100px 560px at 80% -6%, rgba(18,134,119,.05), transparent 60%),
@@ -126,12 +128,8 @@
 <div class="wrap">
   <a class="back" href="../">← Quiet Optics</a>
 
-  <svg class="mark" viewBox="0 0 56 56" fill="none" aria-hidden="true">
-    <circle cx="28" cy="28" r="24" stroke="var(--latent)" stroke-width="1.5" opacity=".45"/>
-    <circle cx="28" cy="28" r="15" stroke="var(--latent)" stroke-width="2"/>
-    <path d="M28 2v14M28 40v14M2 28h14M40 28h14" stroke="var(--latent)" stroke-width="2"/>
-    <circle cx="28" cy="28" r="2.4" fill="var(--latent)"/>
-  </svg>
+  <img class="mark" src="../assets/icons/latent.png" alt="" width="64" height="64"
+    style="width:64px;height:64px;border-radius:14px;border:1px solid var(--line);filter:none;">
 
   <div class="eyebrow">Latent</div>
   <h1>Manifestation with a scoreboard.</h1>
