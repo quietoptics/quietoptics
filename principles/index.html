@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>How we build — Quiet Optics</title>
+<meta name="description" content="Four plain commitments behind every Quiet Optics app: blind by construction, honest statistics, on-device and private, AI as referee.">
+<style>
+  :root {
+    --bg:#0b0b0e; --panel:#141419; --panel2:#1a1a21; --ink:#ebe9e4; --dim:#9a978f;
+    --faint:#63615b; --line:#26262f; --accent:#c9c6be;
+    --teal:#5fd3c4; --copper:#e09c4d;
+  }
+  * { box-sizing:border-box; }
+  html { -webkit-text-size-adjust:100%; }
+  body { margin:0; background:var(--bg); color:var(--ink);
+    font:17px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:760px; margin:0 auto; padding:96px 24px 120px; }
+
+  .back { display:inline-block; text-decoration:none; color:var(--dim);
+    font:13px/1 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:1px;
+    margin-bottom:44px; transition:color .15s; }
+  .back:hover { color:var(--ink); }
+
+  .eyebrow { font:13px/1 ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:5px; text-transform:uppercase; color:var(--dim); }
+  h1 { font-size:2.7rem; font-weight:800; letter-spacing:-.02em; margin:.5em 0 .3em; line-height:1.08; }
+  .lede { font-size:1.24rem; color:var(--dim); max-width:40ch; }
+  strong { color:var(--ink); font-weight:600; }
+
+  .principles { margin-top:64px; display:flex; flex-direction:column; gap:20px; }
+  .principle { background:var(--panel); border:1px solid var(--line); border-radius:16px;
+    padding:28px 28px 30px; }
+  .p-num { font:12px/1 ui-monospace,Menlo,monospace; letter-spacing:2px;
+    text-transform:uppercase; color:var(--faint); }
+  .p-title { color:var(--ink); font-size:1.28rem; font-weight:700; letter-spacing:-.01em;
+    margin:8px 0 12px; }
+  .principle p { color:var(--dim); font-size:1.02rem; margin:0 0 .9em; }
+  .principle p:last-child { margin-bottom:0; }
+
+  .closing { margin-top:72px; color:var(--dim); font-size:1.08rem; }
+  .closing h2 { color:var(--ink); font-size:.85rem; font-weight:600;
+    letter-spacing:2px; text-transform:uppercase; margin:0 0 .8em; }
+  .closing .wonder { color:var(--ink); }
+
+  footer { margin-top:80px; padding-top:28px; border-top:1px solid var(--line);
+    font:13px/1.8 ui-monospace,Menlo,monospace; color:var(--faint); }
+  footer a { color:var(--dim); text-decoration:none; }
+  footer a:hover { color:var(--ink); }
+
+  @media (prefers-color-scheme: light) {
+    :root { --bg:#fbfbfa; --panel:#fff; --panel2:#f5f5f3; --ink:#17171b;
+      --dim:#5b5952; --faint:#6f6d66; --line:#e7e6e2; --accent:#3a3a3a; }
+  }
+  @media (max-width:520px) { h1 { font-size:2.1rem; } .wrap { padding:64px 20px 90px; }
+    .principle { padding:24px 22px 26px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../">← Quiet Optics</a>
+
+  <div class="eyebrow">How we build</div>
+  <h1>Instruments, not oracles.</h1>
+  <p class="lede">That's not a slogan about tone — it's four concrete rules we hold across every app. Here they are, so you can hold us to them.</p>
+
+  <div class="principles">
+    <div class="principle">
+      <div class="p-num">Principle 01</div>
+      <div class="p-title">Blind by construction.</div>
+      <p>You make the call before you can see the answer. The target is hidden in code; the statement, the criterion, the impression are sealed and timestamped before the outcome exists. Reveal is one-way — you can't peek, then quietly discard a bad run.</p>
+      <p>An honest test is one you can't talk your way into passing after the fact. Everything else here depends on this one.</p>
+    </div>
+
+    <div class="principle">
+      <div class="p-num">Principle 02</div>
+      <div class="p-title">Honest statistics, including the disappointing ones.</div>
+      <p>Every score is measured against a fair baseline — random chance, or your own prior — so a "hit" has to earn its keep. Stats stay hidden until there's enough data to mean something; below the line you see how much more you'd need, never a noisy chart dressed up as insight.</p>
+      <p>And the instrument will happily tell you "chance." A flat result is the instrument working, not you failing. We would rather show you an honest "no signal yet" than a flattering number you can't trust. That honesty is the product.</p>
+    </div>
+
+    <div class="principle">
+      <div class="p-num">Principle 03</div>
+      <div class="p-title">On-device and private, provably.</div>
+      <p>Every app runs entirely on your iPhone — no accounts, no analytics, no servers. What you record stays yours because there is nowhere else for it to go.</p>
+      <p>The App Privacy label reads "Data Not Collected" not as a promise but as the only honest answer: there's no server to collect it on. Where an app offers optional paid sync, it goes through your own private iCloud and nowhere else.</p>
+    </div>
+
+    <div class="principle">
+      <div class="p-num">Principle 04</div>
+      <div class="p-title">AI as referee, not oracle.</div>
+      <p>The category around us uses AI to generate the reading — type a fragment, receive a prophecy. We use it the opposite way. Where a Quiet Optics app uses on-device AI at all, it reads a call you already sealed and checks it against an outcome that already exists.</p>
+      <p>It can dock credit; it can't invent it — the displayed score is capped by your own hit/miss judgment. It never tells you what will happen next. And one app, Reticle, uses no AI at all, on purpose: your calibration curve is your data, not a model's guess about your data.</p>
+    </div>
+  </div>
+
+  <div class="closing">
+    <h2>The stance</h2>
+    <p>We take no position on whether remote viewing, forecasting edges, intention, or precognition are real. Neither does the app — that's exactly why it's worth measuring, carefully, for you. We don't sneer and we don't sell belief. We build the instrument and hand you the readout.</p>
+    <p class="wonder">Maybe it's noise. Maybe it isn't. This is how you'd actually find out.</p>
+  </div>
+
+  <footer>
+    © 2026 Quiet Optics ·
+    <a href="mailto:support@quietoptics.com">Contact</a>
+  </footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>Aperture — practice remote viewing honestly</title>
+<meta name="description" content="Aperture hides the target, you record your impressions blind, and it scores your perception — not whether you guessed the name. On-device, private. Coming soon.">
+<style>
+  :root {
+    --bg:#0b0b0e; --panel:#141419; --panel2:#1a1a21; --ink:#ebe9e4; --dim:#9a978f;
+    --faint:#63615b; --line:#26262f; --accent:#5fd3c4;
+    --teal:#5fd3c4; --copper:#e09c4d;
+  }
+  * { box-sizing:border-box; }
+  html { -webkit-text-size-adjust:100%; }
+  body { margin:0; background:var(--bg); color:var(--ink);
+    font:17px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:760px; margin:0 auto; padding:96px 24px 120px; }
+
+  .mark { width:56px; height:56px; margin-bottom:34px; }
+  .eyebrow { font:13px/1 ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:5px; text-transform:uppercase; color:var(--dim); }
+  h1 { font-size:2.7rem; font-weight:800; letter-spacing:-.02em; margin:.5em 0 .3em; line-height:1.08; }
+  .lede { font-size:1.24rem; color:var(--dim); max-width:40ch; }
+  strong { color:var(--ink); font-weight:600; }
+
+  .backlink { display:inline-flex; align-items:center; gap:8px; text-decoration:none;
+    font:12px/1 ui-monospace,Menlo,monospace; letter-spacing:2px; text-transform:uppercase;
+    color:var(--faint); margin-bottom:40px; transition:color .15s; }
+  .backlink:hover { color:var(--ink); }
+
+  .status-chip { display:inline-flex; align-items:center; gap:9px; margin-top:26px;
+    background:var(--panel); border:1px solid var(--line); border-radius:999px;
+    padding:8px 16px; font:12px/1 ui-monospace,Menlo,monospace;
+    letter-spacing:1.5px; text-transform:uppercase; color:var(--dim); }
+  .status-chip .dot { width:8px; height:8px; border-radius:50%; background:var(--teal); }
+
+  section { margin-top:72px; }
+  section h2 { color:var(--ink); font-size:.85rem; font-weight:600;
+    letter-spacing:2px; text-transform:uppercase; margin:0 0 1em; }
+  section p { color:var(--dim); font-size:1.06rem; margin:0 0 1em; }
+  section p:last-child { margin-bottom:0; }
+
+  /* Staged walk */
+  .stages { list-style:none; margin:0; padding:0;
+    display:flex; flex-direction:column; gap:2px; }
+  .stage { display:flex; gap:18px; align-items:flex-start;
+    padding:18px 0; border-top:1px solid var(--line); }
+  .stage:first-child { border-top:none; }
+  .stage-n { flex:0 0 auto; width:30px; font:13px/1.5 ui-monospace,Menlo,monospace;
+    color:var(--teal); padding-top:2px; }
+  .stage-body { flex:1; min-width:0; }
+  .stage-name { color:var(--ink); font-weight:600; }
+  .stage-body p { margin:.35em 0 0; font-size:1rem; }
+
+  /* Feature list */
+  .features { list-style:none; margin:0; padding:0;
+    display:flex; flex-direction:column; gap:16px; }
+  .feature { display:flex; gap:16px; align-items:flex-start;
+    background:var(--panel); border:1px solid var(--line);
+    border-radius:14px; padding:20px 22px; }
+  .feature .tick { flex:0 0 auto; margin-top:3px; color:var(--teal); }
+  .feature-body { flex:1; min-width:0; }
+  .feature-name { color:var(--ink); font-weight:600; }
+  .feature-body p { margin:.3em 0 0; font-size:1rem; }
+
+  .pill { display:inline-block; font:11px/1 ui-monospace,Menlo,monospace;
+    letter-spacing:1px; text-transform:uppercase; color:var(--faint);
+    border:1px solid var(--line); border-radius:6px; padding:3px 7px;
+    margin-left:8px; vertical-align:2px; }
+
+  .privacy { background:var(--panel); border:1px solid var(--line);
+    border-radius:16px; padding:26px 28px; }
+  .privacy p { color:var(--dim); }
+
+  .close { margin-top:72px; }
+  .close .kicker { font-size:1.5rem; font-weight:700; color:var(--ink);
+    letter-spacing:-.01em; }
+  .close .sub { color:var(--dim); margin-top:.5em; }
+
+  footer { margin-top:80px; padding-top:28px; border-top:1px solid var(--line);
+    font:13px/1.8 ui-monospace,Menlo,monospace; color:var(--faint); }
+  footer a { color:var(--dim); text-decoration:none; }
+  footer a:hover { color:var(--ink); }
+  .footer-links { margin-bottom:10px; }
+  .footer-links a { margin-right:18px; }
+
+  @media (prefers-color-scheme: light) {
+    :root { --bg:#fbfbfa; --panel:#fff; --panel2:#f5f5f3; --ink:#17171b;
+      --dim:#5b5952; --faint:#6f6d66; --line:#e7e6e2; --accent:#0d9b82; --teal:#0d9b82; }
+  }
+  @media (max-width:520px) { h1 { font-size:2.1rem; } .wrap { padding:64px 20px 90px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <a class="backlink" href="../">← Quiet Optics</a>
+
+  <div>
+    <svg class="mark" viewBox="0 0 56 56" fill="none" aria-hidden="true">
+      <circle cx="28" cy="28" r="24" stroke="var(--teal)" stroke-width="1.5" opacity=".5"/>
+      <circle cx="28" cy="28" r="15" stroke="var(--teal)" stroke-width="2"/>
+      <path d="M28 2v14M28 40v14M2 28h14M40 28h14" stroke="var(--teal)" stroke-width="2"/>
+      <circle cx="28" cy="28" r="2.4" fill="var(--teal)"/>
+    </svg>
+  </div>
+
+  <div class="eyebrow">Aperture</div>
+  <h1>Practice remote viewing honestly.</h1>
+  <p class="lede">The app hides the target. You record your impressions blind. Then it scores your perception — not whether you guessed the name.</p>
+
+  <div class="status-chip"><span class="dot"></span>Coming soon to the App Store</div>
+
+  <section>
+    <h2>The honest-measurement problem</h2>
+    <p>You can't practice remote viewing alone honestly — the moment you know the target, you're imagining, not viewing. Every solo practice tool has the same hole: nothing stops you from peeking, and nothing stops you from keeping the hits and quietly dropping the misses.</p>
+    <p>Aperture closes that hole in code. It plays the blind tasker, walks you through the classic staged protocol without ever showing you the target, and then scores <strong>trait overlap</strong> instead of the label. Write "cold, white, roaring, falling" for a waterfall and you score a hit — without the word "waterfall." The app rewards what you actually perceived, not a lucky guess at the name.</p>
+  </section>
+
+  <section>
+    <h2>How a session works</h2>
+    <p>Five staged steps, blind the whole way. A running Signal vs AOL ledger lets you flag any conclusion your mind manufactures and set it aside. The coordinate you see is generated independently of the target, so it can never encode the answer.</p>
+    <ol class="stages">
+      <li class="stage">
+        <span class="stage-n">00</span>
+        <div class="stage-body">
+          <span class="stage-name">Cool-down</span>
+          <p>A short breathing pacer to quiet the analytic mind before you begin.</p>
+        </div>
+      </li>
+      <li class="stage">
+        <span class="stage-n">01</span>
+        <div class="stage-body">
+          <span class="stage-name">Ideogram</span>
+          <p>A fast reflexive mark, read only for gestalt — water, land, structure, motion, life, energy, air.</p>
+        </div>
+      </li>
+      <li class="stage">
+        <span class="stage-n">02</span>
+        <div class="stage-body">
+          <span class="stage-name">Sensory chips</span>
+          <p>Single words across eight categories. No stories, no conclusions.</p>
+        </div>
+      </li>
+      <li class="stage">
+        <span class="stage-n">03</span>
+        <div class="stage-body">
+          <span class="stage-name">Sketch &amp; assemble</span>
+          <p>Fuller impressions — drawn and gathered into one picture.</p>
+        </div>
+      </li>
+      <li class="stage">
+        <span class="stage-n">04</span>
+        <div class="stage-body">
+          <span class="stage-name">Reveal</span>
+          <p>The target appears and the run is scored. Reveal is one-way — cancel before it and nothing saves.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Why blind is enforced in code</h2>
+    <p>The app is the blind tasker, so you never hold the target. Reveal is one-way: cancel before it and nothing saves — you can't keep hits and quietly drop misses. And any analytic guess ("it's the Eiffel Tower") goes in an AOL column that's <strong>excluded from scoring entirely</strong>, so flagging a guess costs nothing and hiding one gains nothing.</p>
+  </section>
+
+  <section>
+    <h2>How the score is made</h2>
+    <p>A deterministic on-device score — free and offline — rewards trait overlap between your terms and the target's real traits, with recall weighted over precision: catch the real features first. You see a signal percentage with a Strong / Partial / Low band and a map of hits, misses, and noise.</p>
+    <p>Over time, Pro opens a longer read of your own record: a signal trend, a per-gestalt profile of what you reliably catch versus miss, a calibration read on your gut rating, and a z-test — are you beating what random term-picking would score? It stays silent until you have enough sessions, and it's heavily caveated. A negative result is the instrument working, not a verdict on you.</p>
+  </section>
+
+  <section>
+    <h2>AI — a judge, not a genie</h2>
+    <p>An optional on-device model reads your sealed session against the target you were blind to and hands back what matched, what didn't, and one thing to sharpen. Its displayed score is capped so a generous small model can't inflate the honest number, and it never overwrites it. It doesn't tell you what you'll perceive next — it only grades the run you already sealed. Pro, advisory, on supported iPhones.</p>
+  </section>
+
+  <section>
+    <h2>What's inside</h2>
+    <ul class="features">
+      <li class="feature">
+        <span class="tick" aria-hidden="true">◆</span>
+        <div class="feature-body">
+          <span class="feature-name">The blind staged protocol</span>
+          <p>Cool-down, ideogram, sensory, sketch &amp; assemble, reveal — the app holds the target the whole way.</p>
+        </div>
+      </li>
+      <li class="feature">
+        <span class="tick" aria-hidden="true">◆</span>
+        <div class="feature-body">
+          <span class="feature-name">Signal vs AOL ledger</span>
+          <p>Flag manufactured conclusions and set them aside; flagged guesses never touch the score.</p>
+        </div>
+      </li>
+      <li class="feature">
+        <span class="tick" aria-hidden="true">◆</span>
+        <div class="feature-body">
+          <span class="feature-name">Deterministic signal score <span class="pill">Free · offline</span></span>
+          <p>Trait-overlap scoring that rewards perception over naming, with a hit / miss / noise map.</p>
+        </div>
+      </li>
+      <li class="feature">
+        <span class="tick" aria-hidden="true">◆</span>
+        <div class="feature-body">
+          <span class="feature-name">Trends &amp; calibration <span class="pill">Pro</span></span>
+          <p>Signal trend, a per-gestalt catch-vs-miss profile, a gut-rating calibration read, and a silent-until-ready z-test against chance.</p>
+        </div>
+      </li>
+      <li class="feature">
+        <span class="tick" aria-hidden="true">◆</span>
+        <div class="feature-body">
+          <span class="feature-name">The judge's read <span class="pill">Pro · advisory</span></span>
+          <p>An on-device model grades the run you already sealed — matched, missed, one thing to sharpen — capped by your own honest score.</p>
+        </div>
+      </li>
+      <li class="feature">
+        <span class="tick" aria-hidden="true">◆</span>
+        <div class="feature-body">
+          <span class="feature-name">Relay mode, profiles &amp; export <span class="pill">Pro</span></span>
+          <p>Two-person relay on the same blind target, multiple viewer profiles, JSON export, and iPad split-view.</p>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Privacy</h2>
+    <div class="privacy">
+      <p>Aperture runs entirely on your device — no accounts, no analytics, no servers. Optional Pro iCloud sync goes through your own private iCloud.</p>
+    </div>
+  </section>
+
+  <div class="close">
+    <div class="kicker">Instruments, not oracles.</div>
+    <p class="sub">Aperture doesn't know whether remote viewing is real. Neither do we — that's exactly why it's worth measuring, honestly, for you. Coming soon.</p>
+  </div>
+
+  <footer>
+    <div class="footer-links">
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="support.html">Support</a>
+    </div>
+    © 2026 Quiet Optics ·
+    <a href="mailto:support@quietoptics.com">support@quietoptics.com</a>
+  </footer>
+</div>
+</body>
+</html>

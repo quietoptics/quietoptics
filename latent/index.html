@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>Latent — manifestation with a scoreboard</title>
+<meta name="description" content="Latent turns 'does this work?' into a measurable question: which of your habits actually improves your hit rate. Coming soon from Quiet Optics.">
+<style>
+  :root {
+    --bg:#0b0b0e; --panel:#141419; --panel2:#1a1a21; --ink:#ebe9e4; --dim:#9a978f;
+    --faint:#63615b; --line:#26262f; --accent:#c9c6be;
+    --teal:#5fd3c4; --copper:#e09c4d; --latent:#8d8bd4;
+  }
+  * { box-sizing:border-box; }
+  html { -webkit-text-size-adjust:100%; }
+  body { margin:0; background:var(--bg); color:var(--ink);
+    font:17px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:760px; margin:0 auto; padding:96px 24px 120px; }
+
+  .mark { width:56px; height:56px; margin-bottom:34px; }
+  .eyebrow { font:13px/1 ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:5px; text-transform:uppercase; color:var(--latent); }
+  h1 { font-size:2.7rem; font-weight:800; letter-spacing:-.02em; margin:.5em 0 .3em; line-height:1.08; }
+  .lede { font-size:1.24rem; color:var(--dim); max-width:46ch; }
+  strong { color:var(--ink); font-weight:600; }
+  .num { font-variant-numeric:tabular-nums; }
+
+  .back { display:inline-block; margin-bottom:40px; text-decoration:none;
+    font:12px/1 ui-monospace,Menlo,monospace; letter-spacing:1.5px; text-transform:uppercase;
+    color:var(--faint); }
+  .back:hover { color:var(--ink); }
+
+  section { margin-top:64px; }
+  h2 { color:var(--ink); font-size:.85rem; font-weight:600;
+    letter-spacing:2px; text-transform:uppercase; margin:0 0 1em; }
+  h2 .idx { color:var(--latent); margin-right:.9em; }
+  p { color:var(--dim); }
+  p.lead-claim { color:var(--ink); font-size:1.18rem; font-weight:600; letter-spacing:-.01em;
+    max-width:40ch; line-height:1.35; }
+
+  .steps { list-style:none; margin:0; padding:0; counter-reset:step; }
+  .step { display:flex; gap:18px; padding:20px 0; border-top:1px solid var(--line); }
+  .step:first-child { border-top:none; }
+  .step-n { counter-increment:step; flex:0 0 auto; width:30px; height:30px; border-radius:50%;
+    border:1px solid var(--line); display:flex; align-items:center; justify-content:center;
+    font:13px/1 ui-monospace,Menlo,monospace; color:var(--latent); }
+  .step-n::before { content:counter(step); }
+  .step-b { flex:1; min-width:0; }
+  .step-t { color:var(--ink); font-weight:600; }
+  .step-d { color:var(--dim); font-size:.98rem; margin-top:3px; }
+
+  .feat { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:2px; }
+  .feat li { display:flex; gap:14px; padding:13px 0; border-top:1px solid var(--line);
+    color:var(--dim); font-size:1.0rem; }
+  .feat li:first-child { border-top:none; }
+  .feat .k { color:var(--ink); font-weight:600; flex:0 0 auto; width:150px; }
+  .feat .k::before { content:"·"; color:var(--latent); margin-right:.55em; }
+
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:14px;
+    padding:20px 22px; margin-top:8px; }
+  .card .lift { font-size:1.02rem; color:var(--dim); }
+  .card .lift b { color:var(--ink); }
+  .card .plus { color:var(--latent); font-weight:700; }
+
+  .status { display:inline-flex; align-items:center; gap:10px; margin-top:8px;
+    font:12px/1 ui-monospace,Menlo,monospace; letter-spacing:1.5px; text-transform:uppercase;
+    color:var(--faint); }
+  .status .dot { width:8px; height:8px; border-radius:50%; background:var(--latent); }
+
+  footer { margin-top:88px; padding-top:28px; border-top:1px solid var(--line);
+    font:13px/1.8 ui-monospace,Menlo,monospace; color:var(--faint); }
+  footer a { color:var(--dim); text-decoration:none; }
+  footer a:hover { color:var(--ink); }
+
+  @media (prefers-color-scheme: light) {
+    :root { --bg:#fbfbfa; --panel:#fff; --panel2:#f5f5f3; --ink:#17171b;
+      --dim:#5b5952; --faint:#6f6d66; --line:#e7e6e2; --accent:#3a3a3a; --latent:#5f5da8; }
+  }
+  @media (max-width:520px) {
+    h1 { font-size:2.1rem; } .wrap { padding:64px 20px 90px; }
+    .feat .k { width:auto; flex:1 1 auto; }
+    .feat li { flex-direction:column; gap:3px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../">← Quiet Optics</a>
+
+  <svg class="mark" viewBox="0 0 56 56" fill="none" aria-hidden="true">
+    <circle cx="28" cy="28" r="24" stroke="var(--latent)" stroke-width="1.5" opacity=".45"/>
+    <circle cx="28" cy="28" r="15" stroke="var(--latent)" stroke-width="2"/>
+    <path d="M28 2v14M28 40v14M2 28h14M40 28h14" stroke="var(--latent)" stroke-width="2"/>
+    <circle cx="28" cy="28" r="2.4" fill="var(--latent)"/>
+  </svg>
+
+  <div class="eyebrow">Latent</div>
+  <h1>Manifestation with a scoreboard.</h1>
+  <p class="lede">Set an intention, commit up front to how you'll grade it and how likely it honestly was, tag your practices — then find out whether your outcomes beat your own expectations, and which habits actually move your hit rate.</p>
+
+  <section>
+    <h2>The inversion</h2>
+    <p class="lead-claim">The whole intention-setting category sells belief and avoids measurement. Latent does the opposite.</p>
+    <p>It turns an unfalsifiable question — <em>"does this work?"</em> — into a measurable one: <strong>which of these habits improves my hit rate?</strong> Latent doesn't know whether intention-setting works. Neither do we — that's exactly why it's worth measuring, honestly, against your own record.</p>
+  </section>
+
+  <section>
+    <h2>How an entry works</h2>
+    <ol class="steps">
+      <li class="step"><span class="step-n"></span><div class="step-b">
+        <span class="step-t">Wish</span>
+        <div class="step-d">What you want, written as it feels — no editing yourself into a spreadsheet yet.</div>
+      </div></li>
+      <li class="step"><span class="step-n"></span><div class="step-b">
+        <span class="step-t">Make it real</span>
+        <div class="step-d">A checkable criterion and a deadline. Gentle, advisory hints nudge the one question that matters: could future-you answer this yes or no?</div>
+      </div></li>
+      <li class="step"><span class="step-n"></span><div class="step-b">
+        <span class="step-t">Honest prior</span>
+        <div class="step-d">On a <span class="num">1–99</span> scale: how likely is this anyway? An honest <span class="num">20%</span> is what makes a later yes mean something.</div>
+      </div></li>
+      <li class="step"><span class="step-n"></span><div class="step-b">
+        <span class="step-t">Practices</span>
+        <div class="step-d">Toggle any of four evidence-backed habits — next action, if-then plan, mental rehearsal, gratitude — each shown with its research citation.</div>
+      </div></li>
+    </ol>
+    <p>Later you resolve each intention as <strong>hit</strong>, <strong>partial</strong>, <strong>miss</strong>, or <strong>void</strong>. Onboarding seeds a few fast-resolving intentions, so your first result lands within a couple of days.</p>
+  </section>
+
+  <section>
+    <h2>Why raw priors and frozen practices</h2>
+    <p>Here you <em>want</em> the outcome, so a low honest prior is normal and correct — Latent keeps priors raw, with no negation flip. Your practices are tagged before you know the result and <strong>frozen after you resolve</strong>, so hindsight can't reach back and credit the habit that merely happened to coincide with a win. That freeze is what makes the "what actually works for you" view trustworthy.</p>
+  </section>
+
+  <section>
+    <h2>How the score is made</h2>
+    <p><strong>Lift</strong> is the headline: your hit rate minus your own average prior, in points.</p>
+    <div class="card">
+      <div class="lift">"You said <b>44%</b> on average. <b>58%</b> actually happened — <span class="plus">+14 points</span> vs your own baseline."</div>
+    </div>
+    <p>It's the stat no belief-app will show you. Alongside it: a <strong>Brier score</strong>, a <strong>calibration read</strong>, and the money view — your per-practice hit rate <em>with</em> a habit versus <em>without</em> it, shown as a ratio, revealed only once both sides have enough data, and always labeled correlation, not proof.</p>
+  </section>
+
+  <section>
+    <h2>The AI — checkable, not magical</h2>
+    <p>A free, on-device writing assist turns a vague wish into a concrete, scoreable criterion. It suggests checkable phrasing and nothing more — it never promises an outcome, never invents a number, and never gives medical or financial advice. A hard honesty filter, not the prompt, is what guarantees that. It's free with a supported device because it's a writing aid, not a premium prophecy — and it's part of logging, which is always free.</p>
+  </section>
+
+  <section>
+    <h2>Features</h2>
+    <ul class="feat">
+      <li><span class="k">Guided capture</span><span>Four steps — wish, checkable criterion and deadline, honest 1–99 prior, practices.</span></li>
+      <li><span class="k">Four practices</span><span>Next action, if-then plan, mental rehearsal, gratitude — each with its citation, frozen at resolve.</span></li>
+      <li><span class="k">Honest outcomes</span><span>Resolve as hit, partial, miss, or void — voids counted, never scored.</span></li>
+      <li><span class="k">Lift</span><span>Your hit rate against your own average prior, in points.</span></li>
+      <li><span class="k">Brier &amp; calibration</span><span>A calibration read and a widest-gap verdict on where you're over-hopeful.</span></li>
+      <li><span class="k">Practice correlation</span><span>Hit rate with a habit vs without it, as a ratio — shown only with enough data, labeled correlation.</span></li>
+      <li><span class="k">Writing assist</span><span>Free, on-device suggestions that make a wish checkable — never a number, never a promise.</span></li>
+      <li><span class="k">Seeded start</span><span>A few fast-resolving intentions so your first result lands within a couple of days.</span></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Privacy</h2>
+    <p>Latent runs <strong>entirely on your device</strong> — no accounts, no analytics, no servers. The writing assist runs on-device too: nothing you write leaves your phone. Optional Pro iCloud sync syncs through your own private iCloud.</p>
+  </section>
+
+  <section>
+    <h2>Status</h2>
+    <span class="status"><span class="dot"></span>Coming soon to the App Store</span>
+  </section>
+
+  <footer>
+    © 2026 Quiet Optics ·
+    <a href="mailto:support@quietoptics.com">support@quietoptics.com</a> ·
+    <a href="../">All apps</a>
+  </footer>
+</div>
+</body>
+</html>
