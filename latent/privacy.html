@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark light">
-<title>Aperture — Privacy Policy · Quiet Optics</title>
-<meta name="description" content="Aperture's privacy policy: everything stays on your device, and we collect nothing.">
-<link rel="canonical" href="https://quietoptics.com/aperture/privacy.html">
+<title>Latent — Privacy Policy · Quiet Optics</title>
+<meta name="description" content="Latent's privacy policy: everything stays on your device, and we collect nothing.">
+<link rel="canonical" href="https://quietoptics.com/latent/privacy.html">
 <meta property="og:site_name" content="Quiet Optics">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Aperture — Privacy Policy · Quiet Optics">
-<meta property="og:description" content="Aperture's privacy policy: everything stays on your device, and we collect nothing.">
-<meta property="og:url" content="https://quietoptics.com/aperture/privacy.html">
+<meta property="og:title" content="Latent — Privacy Policy · Quiet Optics">
+<meta property="og:description" content="Latent's privacy policy: everything stays on your device, and we collect nothing.">
+<meta property="og:url" content="https://quietoptics.com/latent/privacy.html">
 <meta property="og:image" content="https://quietoptics.com/assets/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -27,7 +27,7 @@
     /* Spectral instrument — dark (default) */
     --bg:#0a0e16; --bg-tint:#0c1220; --panel:#111725; --panel2:#161d2e;
     --ink:#e9ecf2; --dim:#9aa3b4; --faint:#5c657a; --line:#1e2636; --line2:#2a3346;
-    --accent:#5fd3c4; --teal:#5fd3c4; --link:#5fd3c4;
+    --accent:#8d8bd4; --teal:#8d8bd4; --link:#8d8bd4;
     --spectrum:linear-gradient(90deg,#5fd3c4 0%,#8ebdef 32%,#8d8bd4 60%,#e09c4d 100%);
   }
   * { box-sizing:border-box; }
@@ -69,7 +69,7 @@
     :root {
       --bg:#f4f6f9; --bg-tint:#eef1f6; --panel:#ffffff; --panel2:#f6f8fb;
       --ink:#12151c; --dim:#535b6b; --faint:#7a8294; --line:#e2e6ee; --line2:#d2d8e4;
-      --accent:#128677; --teal:#128677; --link:#0f7466;
+      --accent:#5b58b8; --teal:#5b58b8; --link:#5b58b8;
       --spectrum:linear-gradient(90deg,#1f9d8d 0%,#38669e 32%,#6d6bc0 60%,#c07a1f 100%);
     }
     body { background:
@@ -83,57 +83,59 @@
 <body>
 <div class="topline" aria-hidden="true"></div>
 <div class="wrap">
-  <div class="eyebrow">Aperture</div>
+  <div class="eyebrow">Latent</div>
   <h1>Privacy Policy</h1>
   <div class="date">Effective date: July 23, 2026</div>
 
-  <p>Aperture is a Controlled Remote Viewing practice tool from <strong>Quiet Optics LLC</strong>
-  (“we”, “us”). This policy describes what data the app handles. The short version:
+  <p>Latent is an intention tracker from <strong>Quiet Optics LLC</strong> (“we”, “us”). This policy
+  describes what data the app handles. The short version:
   <strong>everything stays on your device, and we collect nothing.</strong></p>
 
   <h2>What we collect</h2>
-  <p><strong>Nothing.</strong> Aperture has no accounts, no analytics SDKs, no advertising,
+  <p><strong>Nothing.</strong> Latent has no accounts, no analytics SDKs, no advertising,
   no tracking, and no server of ours that the app talks to.</p>
 
   <h2>What stays on your device</h2>
-  <p>The app stores the following <strong>locally on your device only</strong>:</p>
+  <p>The app stores the following <strong>locally on your iPhone only</strong>:</p>
   <ul>
-    <li>Viewer names you create and their session histories (impressions, sketches, scores, self-ratings)</li>
-    <li>Your onboarding/completion state and app preferences</li>
+    <li>The intentions you log — statements, criteria, target dates, tags, notes, and how they resolved</li>
+    <li>Your calibration statistics and lift metrics, which are computed on-device from those intentions</li>
+    <li>Your onboarding state and app preferences</li>
   </ul>
-  <p>This data never leaves your device unless <em>you</em> export it or turn on iCloud sync.
-  The optional <strong>Export</strong> feature writes your session data to a file and hands it
-  to the iOS share sheet — where it goes from there (Messages, Files, email) is entirely your
-  choice and under your control.</p>
-  <p>If you enable the optional <strong>Pro iCloud sync</strong>, your session data moves through
-  <strong>your own private iCloud</strong> — Apple's CloudKit private database, tied to your Apple
-  Account — so it can sync across your devices, and nowhere else. It never passes through a server
-  of ours; we can't see it, and there is no account with us for it to belong to.</p>
-  <p>The optional <strong>AI judge</strong> runs entirely on your device using Apple’s
-  on-device language model. Your impressions are never sent to us or to any AI service —
-  the analysis happens on your device, and works with no internet connection at all.</p>
-  <p>If you delete a viewer, that viewer’s sessions are permanently deleted. If you delete
-  the app, all app data is deleted with it.</p>
+  <p>Reminders about intentions are <strong>local notifications</strong>, scheduled and
+  delivered entirely by iOS on your device. No push server is involved.</p>
+
+  <h2>Import and export</h2>
+  <p>If you import a CSV file (from Latent itself or a compatible format), the file
+  is read on your device and its contents become part of your local journal. If you export
+  your journal, the CSV file is created on your device and goes only where you choose to
+  send it via the iOS share sheet. We never see either file.</p>
 
   <h2>Purchases</h2>
-  <p>Subscriptions and the lifetime unlock are processed entirely by <strong>Apple</strong>
-  through the App Store. We never see your payment details, name, or Apple Account. Purchase
-  entitlement is verified on-device via Apple’s StoreKit. Apple’s handling of your purchase
-  data is governed by <a href="https://www.apple.com/legal/privacy/">Apple’s Privacy Policy</a>.</p>
+  <p>Subscriptions and the lifetime unlock are processed by Apple through your Apple
+  Account. We receive no payment details. Apple's handling of that data is covered by
+  <a href="https://www.apple.com/legal/privacy/">Apple's privacy policy</a>. Latent
+  verifies your entitlement on-device using StoreKit.</p>
+
+  <h2>Data deletion</h2>
+  <p>Settings → “Delete all intentions” permanently removes your journal from the device.
+  Deleting the app removes everything else. There is no copy on any server to delete,
+  because none exists.</p>
 
   <h2>Children</h2>
-  <p>Aperture is rated 12+ and does not knowingly collect any data from anyone, children
-  included — because it collects no data at all.</p>
+  <p>Latent is not directed at children under 13 and collects no data from anyone,
+  including children.</p>
 
-  <h2>Changes to this policy</h2>
-  <p>If a future version of Aperture ever changes what data is handled, this policy will be
-  updated first and the change will be clearly disclosed in the app before anything is enabled.</p>
+  <h2>Changes</h2>
+  <p>If a future version of Latent ever changes what data is handled (for example, an
+  optional iCloud sync of your own journal to your own private iCloud database), this
+  policy will be updated first and the change will be called out in the App Store notes.</p>
 
   <h2>Contact</h2>
-  <p>Questions: <strong><a href="mailto:support@quietoptics.com">support@quietoptics.com</a></strong></p>
+  <p>Questions: <a href="mailto:support@quietoptics.com">support@quietoptics.com</a></p>
 
   <div class="nav">
-    <a href="index.html">← Aperture</a>
+    <a href="index.html">← Latent</a>
     <a href="terms.html">Terms of Use</a>
     <a href="support.html">Support</a>
   </div>
