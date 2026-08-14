@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>How to score a session without fooling yourself · Quiet Optics</title>
+<meta name="description" content="A short field guide to scoring a remote viewing practice session honestly: seal before reveal, score against a fixed vocabulary, and the traps that make an ordinary run look like a signal.">
+<link rel="canonical" href="https://quietoptics.com/scoring/">
+<meta property="og:site_name" content="Quiet Optics">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to score a session without fooling yourself">
+<meta property="og:description" content="Seal before reveal, score against a fixed vocabulary, and know the traps that make an ordinary run look like a signal.">
+<meta property="og:url" content="https://quietoptics.com/scoring/">
+<meta property="og:image" content="https://quietoptics.com/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0a0e16">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f4f6f9">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<style>
+  :root {
+    /* Spectral instrument — dark (default) */
+    --bg:#0a0e16; --bg-tint:#0c1220; --panel:#111725; --panel2:#161d2e;
+    --ink:#e9ecf2; --dim:#9aa3b4; --faint:#5c657a; --line:#1e2636; --line2:#2a3346;
+    --accent:#5fd3c4; --teal:#5fd3c4; --link:#5fd3c4;
+    --warn:#e09c4d; --warn-line:rgba(224,156,77,.38);
+    --spectrum:linear-gradient(90deg,#5fd3c4 0%,#8ebdef 32%,#8d8bd4 60%,#e09c4d 100%);
+  }
+  * { box-sizing:border-box; }
+  html { -webkit-text-size-adjust:100%; }
+  body { margin:0; color:var(--ink);
+    background:
+      radial-gradient(1200px 600px at 78% -8%, rgba(95,211,196,.06), transparent 60%),
+      radial-gradient(900px 620px at 12% 4%, rgba(141,139,212,.05), transparent 62%),
+      linear-gradient(180deg, var(--bg-tint), var(--bg) 40%);
+    background-attachment:fixed; background-color:var(--bg);
+    font:17px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased; }
+  .topline { position:fixed; top:0; left:0; right:0; height:2px; z-index:5;
+    background:var(--spectrum); opacity:.85; }
+  .wrap { position:relative; max-width:720px; margin:0 auto; padding:72px 24px 110px; }
+  .eyebrow { font:13px/1 ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:4px; text-transform:uppercase; color:var(--teal);
+    display:inline-flex; align-items:center; gap:12px; }
+  .eyebrow::after { content:""; width:30px; height:1px; background:linear-gradient(90deg,var(--teal),transparent); }
+  h1 { font-size:2.4rem; font-weight:800; letter-spacing:-.02em; margin:.4em 0 .15em; line-height:1.1; }
+  .standfirst { color:var(--dim); font-size:1.06rem; margin:0 0 2.4em; }
+  h2 { font-size:1.16rem; font-weight:700; margin:2.6em 0 .5em; color:var(--ink); letter-spacing:-.01em; }
+  h2 .num { font:12px/1 ui-monospace,SFMono-Regular,Menlo,monospace; color:var(--faint);
+    letter-spacing:2px; margin-right:12px; vertical-align:.22em; }
+  h3 { font-size:1.02rem; font-weight:700; margin:1.8em 0 .35em; color:var(--ink); letter-spacing:-.01em; }
+  p, li { color:var(--dim); }
+  strong { color:var(--ink); font-weight:600; }
+  em { color:var(--dim); font-style:italic; }
+  a { color:var(--link); text-decoration:none; } a:hover { text-decoration:underline; }
+  a:focus-visible { outline:2px solid var(--accent); outline-offset:3px; border-radius:4px; }
+  ul { padding-left:1.2em; } li { margin:.4em 0; }
+  hr { border:0; border-top:1px solid var(--line); margin:2.6em 0; }
+
+  /* vocabulary tables */
+  .vocab { display:flex; flex-direction:column; gap:10px; margin:1.1em 0 0; }
+  .row { display:grid; grid-template-columns:8.2rem 1fr; gap:4px 16px;
+    padding:12px 14px; background:var(--panel); border:1px solid var(--line); border-radius:8px; }
+  .row .cat { font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:1.4px; text-transform:uppercase; color:var(--faint); }
+  .row .words { color:var(--dim); font-size:.95rem; line-height:1.6; }
+  .gestalts { display:flex; flex-wrap:wrap; gap:8px; margin:1em 0 0; padding:0; list-style:none; }
+  .gestalts li { margin:0; padding:7px 13px; border:1px solid var(--line2); border-radius:999px;
+    background:var(--panel); color:var(--ink); font-size:.92rem; font-weight:600; }
+
+  .trap { border:1px solid var(--line); border-left:2px solid var(--warn);
+    background:var(--panel); border-radius:8px; padding:16px 18px; margin:1em 0 0; }
+  .trap h3 { margin:0 0 .3em; color:var(--warn); font-size:.98rem; }
+  .trap p { margin:0; font-size:.96rem; }
+
+  .keyline { border:1px solid var(--line2); border-radius:10px; background:var(--panel);
+    padding:20px 22px; margin:1.4em 0 0; }
+  .keyline p { margin:0; }
+  .refrain { color:var(--ink); font-size:1.06rem; font-weight:600; letter-spacing:-.01em; }
+
+  .nav { margin-top:2.6em; padding-top:26px; border-top:1px solid var(--line);
+    font:13px/1.9 ui-monospace,Menlo,monospace; color:var(--faint); }
+  .nav a { color:var(--dim); margin-right:1.5em; text-decoration:none; }
+  .nav a:hover { color:var(--accent); }
+  footer { margin-top:32px; position:relative; padding-top:22px;
+    font:13px/1.8 ui-monospace,Menlo,monospace; color:var(--faint); }
+  footer::before { content:""; position:absolute; top:0; left:0; width:110px; height:2px;
+    border-radius:2px; background:var(--spectrum); opacity:.7; }
+  footer a { color:var(--dim); text-decoration:none; } footer a:hover { color:var(--accent); }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg:#f4f6f9; --bg-tint:#eef1f6; --panel:#ffffff; --panel2:#f6f8fb;
+      --ink:#12151c; --dim:#535b6b; --faint:#7a8294; --line:#e2e6ee; --line2:#d2d8e4;
+      --accent:#128677; --teal:#128677; --link:#0f7466;
+      --warn:#9c5c14; --warn-line:rgba(156,92,20,.34);
+      --spectrum:linear-gradient(90deg,#1f9d8d 0%,#38669e 32%,#6d6bc0 60%,#c07a1f 100%);
+    }
+    body { background:
+      radial-gradient(1100px 560px at 80% -6%, rgba(18,134,119,.05), transparent 60%),
+      radial-gradient(820px 560px at 12% 3%, rgba(109,107,192,.05), transparent 62%),
+      linear-gradient(180deg, var(--bg-tint), var(--bg) 42%); }
+  }
+  @media (max-width:520px) {
+    h1 { font-size:2rem; } .wrap { padding:56px 20px 80px; }
+    .row { grid-template-columns:1fr; }
+  }
+  @media print {
+    .topline, .nav { display:none; }
+    body { background:#fff; color:#000; font-size:11pt; }
+    .wrap { max-width:none; padding:0; }
+    .row, .trap, .keyline, .gestalts li { border-color:#bbb; background:#fff; }
+    p, li, .row .words { color:#222; }
+    a { color:#000; text-decoration:underline; }
+    h2 { page-break-after:avoid; } .trap, .row { page-break-inside:avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="topline" aria-hidden="true"></div>
+<div class="wrap">
+
+  <div class="eyebrow">Field guide</div>
+  <h1>How to score a session without fooling yourself</h1>
+  <p class="standfirst">Scoring is where practice logs go wrong. Not the viewing, the scoring.
+  Everything below is about making your own record mean something later, when you finally
+  add it up.</p>
+
+  <h2><span class="num">01</span>The problem is you</h2>
+  <p>A session produces a page of impressions. The target turns out to be a waterfall. Now
+  you decide which of your impressions count. That decision is the entire experiment, and
+  you're making it after you already know the answer.</p>
+  <p>Nobody is dishonest here. The mind fills gaps as a matter of course. "Movement" becomes
+  a hit for falling water. "Cool" was obviously right. The three pages that pointed at a
+  parking garage fade out of the account. Do that fifty times and you'll have a folder full
+  of hits and no idea whether anything happened.</p>
+  <p>The fix is not trying harder to be fair. It's removing the moment where fairness is
+  required.</p>
+
+  <h2><span class="num">02</span>Seal before you reveal</h2>
+  <p>Commit your impressions in a form you cannot edit, <strong>then</strong> look at the
+  target. Not "then I wrote it up properly." Sealed, timestamped, done.</p>
+  <p>If you're on paper, write the session, then photograph the page before the reveal. The
+  photograph is your record, not the page. This single habit removes most of the trouble,
+  because retrofitting stops being possible rather than merely discouraged.</p>
+
+  <h2><span class="num">03</span>Score against a fixed vocabulary</h2>
+  <p>Free prose cannot be scored. "A sense of something vast and old and quietly powerful"
+  matches a cathedral, a canyon, a redwood, a power station and a whale. It feels precise
+  while committing to nothing.</p>
+  <p>Instead, reduce every impression to terms from a list you decided on <em>before</em> you
+  started, and score only those. Here is the vocabulary Aperture uses. It is deliberately
+  small.</p>
+
+  <h3>The seven gestalts</h3>
+  <p>The first, coarsest read. What kind of thing is it?</p>
+  <ul class="gestalts">
+    <li>Water</li><li>Land</li><li>Structure</li><li>Motion</li>
+    <li>Life</li><li>Energy</li><li>Air</li>
+  </ul>
+
+  <h3>The sensory terms</h3>
+  <p>Then the detail, in eight categories. Roughly sixty words, and no others.</p>
+  <div class="vocab">
+    <div class="row"><span class="cat">Color</span><span class="words">white, blue, green, brown, red, yellow, grey, black, orange, purple, pink</span></div>
+    <div class="row"><span class="cat">Texture</span><span class="words">wet, dry, rough, smooth, hard, soft, grainy, metallic, rippled</span></div>
+    <div class="row"><span class="cat">Temperature</span><span class="words">hot, warm, cool, cold</span></div>
+    <div class="row"><span class="cat">Light</span><span class="words">bright, dark, reflective, shiny</span></div>
+    <div class="row"><span class="cat">Sound</span><span class="words">loud, quiet, roaring, humming, echoing, silent</span></div>
+    <div class="row"><span class="cat">Form</span><span class="words">tall, flat, curved, angular, vast, enclosed, open, layered, sloping</span></div>
+    <div class="row"><span class="cat">Motion</span><span class="words">still, flowing, fast, spinning, rising, falling</span></div>
+    <div class="row"><span class="cat">Substance</span><span class="words">stone, water, wood, sand, ice, fire, vegetation, smoke, steam</span></div>
+  </div>
+  <p style="margin-top:1.1em;">Synonyms are fine as long as they resolve to exactly one term and
+  you fix the mapping in advance. "Gray" is "grey". "Freezing" is "cold". "Ochre" is "brown".
+  What is never fine is a category-for-value swap: blue is not a hit for red, however close
+  the feeling was.</p>
+
+  <h2><span class="num">04</span>Decide the count before you start</h2>
+  <p>Pick how many sessions you're running, and how many targets you're choosing between,
+  before the first one. Write both down. Then run all of them, including the run where it's
+  going badly and you'd rather stop.</p>
+  <p>This is the least enjoyable rule in practice work and the only one that makes the final
+  number mean anything.</p>
+
+  <h2><span class="num">05</span>The five traps</h2>
+
+  <div class="trap">
+    <h3>Scoring after the reveal</h3>
+    <p>Deciding what counted once you've seen the target. Covered above, and it is by far the
+    biggest one. Everything else on this list is a variation of it.</p>
+  </div>
+  <div class="trap">
+    <h3>Stopping when it looks good</h3>
+    <p>Checking your hit rate after every session and stopping the moment it crosses the line.
+    Do this and you will cross the line eventually by luck alone. That isn't a signal, it's
+    shopping for one.</p>
+  </div>
+  <div class="trap">
+    <h3>Quietly dropping sessions</h3>
+    <p>The one where you were tired. The one where you got interrupted. The one that was
+    obviously nothing. Every excluded session has a reason, and the reasons correlate with
+    the result, which is exactly the problem.</p>
+  </div>
+  <div class="trap">
+    <h3>Terms that match anything</h3>
+    <p>"Energy" and "structure" will fit most targets if you let them. If a term would have
+    counted for four of the five targets in the pool, it isn't evidence. Ask that question
+    before you credit it.</p>
+  </div>
+  <div class="trap">
+    <h3>Counting near misses</h3>
+    <p>Blue for red because both are colors. A bridge for a dam because both span water.
+    Generosity here is the fastest way to a folder of hits that mean nothing.</p>
+  </div>
+
+  <h2><span class="num">06</span>Then add it up</h2>
+  <p>Once the run is finished, the question is simple: is this hit rate doing something luck
+  wouldn't? You cannot eyeball that. Six out of twelve on a one in four pool feels
+  remarkable and isn't quite. Seven is.</p>
+  <div class="keyline">
+    <p><a href="/chance/">Work out whether you're beating chance →</a> Free, nothing stored,
+    nothing sent.</p>
+  </div>
+
+  <hr>
+
+  <div class="keyline">
+    <p class="refrain">Maybe it's noise. Maybe it isn't. This is how you'd actually find out.</p>
+  </div>
+
+  <div class="nav">
+    <a href="/">← Quiet Optics</a>
+    <a href="/chance/">Beating chance?</a>
+    <a href="/aperture/">Aperture</a>
+  </div>
+  <footer>© 2026 Quiet Optics LLC · <a href="mailto:support@quietoptics.com">support@quietoptics.com</a></footer>
+</div>
+</body>
+</html>
