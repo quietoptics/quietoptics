@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>Are you beating chance? · Quiet Optics</title>
+<meta name="description" content="A free tool for anyone keeping a practice log. Enter your sessions and hits, and find out whether your hit rate is doing something luck wouldn't.">
+<link rel="canonical" href="https://quietoptics.com/chance/">
+<meta property="og:site_name" content="Quiet Optics">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Are you beating chance?">
+<meta property="og:description" content="Enter your sessions and hits. Find out whether your hit rate is doing something luck wouldn't.">
+<meta property="og:url" content="https://quietoptics.com/chance/">
+<meta property="og:image" content="https://quietoptics.com/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0a0e16">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f4f6f9">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<style>
+  :root {
+    /* Spectral instrument — dark (default) */
+    --bg:#0a0e16; --bg-tint:#0c1220; --panel:#111725; --panel2:#161d2e;
+    --ink:#e9ecf2; --dim:#9aa3b4; --faint:#5c657a; --line:#1e2636; --line2:#2a3346;
+    --accent:#5fd3c4; --teal:#5fd3c4; --link:#5fd3c4;
+    --signal:#5fd3c4; --signal-wash:rgba(95,211,196,.10); --signal-line:rgba(95,211,196,.38);
+    --noise:#e09c4d;  --noise-wash:rgba(224,156,77,.10);  --noise-line:rgba(224,156,77,.38);
+    --field:#0d1320;
+    --spectrum:linear-gradient(90deg,#5fd3c4 0%,#8ebdef 32%,#8d8bd4 60%,#e09c4d 100%);
+  }
+  * { box-sizing:border-box; }
+  html { -webkit-text-size-adjust:100%; }
+  body { margin:0; color:var(--ink);
+    background:
+      radial-gradient(1200px 600px at 78% -8%, rgba(95,211,196,.06), transparent 60%),
+      radial-gradient(900px 620px at 12% 4%, rgba(141,139,212,.05), transparent 62%),
+      linear-gradient(180deg, var(--bg-tint), var(--bg) 40%);
+    background-attachment:fixed; background-color:var(--bg);
+    font:17px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased; }
+  .topline { position:fixed; top:0; left:0; right:0; height:2px; z-index:5;
+    background:var(--spectrum); opacity:.85; }
+  .wrap { position:relative; max-width:720px; margin:0 auto; padding:72px 24px 110px; }
+  .eyebrow { font:13px/1 ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:4px; text-transform:uppercase; color:var(--teal);
+    display:inline-flex; align-items:center; gap:12px; }
+  .eyebrow::after { content:""; width:30px; height:1px; background:linear-gradient(90deg,var(--teal),transparent); }
+  h1 { font-size:2.4rem; font-weight:800; letter-spacing:-.02em; margin:.4em 0 .15em; line-height:1.1; }
+  h2 { font-size:1.16rem; font-weight:700; margin:2.4em 0 .5em; color:var(--ink); letter-spacing:-.01em; }
+  p, li { color:var(--dim); }
+  strong { color:var(--ink); font-weight:600; }
+  em { color:var(--dim); font-style:italic; }
+  a { color:var(--link); text-decoration:none; } a:hover { text-decoration:underline; }
+  a:focus-visible, button:focus-visible, input:focus-visible {
+    outline:2px solid var(--accent); outline-offset:3px; border-radius:4px; }
+  ul { padding-left:1.2em; } li { margin:.35em 0; }
+  hr { border:0; border-top:1px solid var(--line); margin:2.6em 0; }
+  .intro { margin-bottom:2.2em; }
+
+  /* ---- the instrument ---- */
+  form { margin:0; }
+  .fields { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  .field { display:flex; flex-direction:column; gap:7px; }
+  .field label { font:12px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:1.4px; text-transform:uppercase; color:var(--faint); }
+  .field input {
+    width:100%; background:var(--field); color:var(--ink);
+    border:1px solid var(--line2); border-radius:8px;
+    padding:14px 12px; font:600 1.5rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-variant-numeric:tabular-nums; text-align:center;
+    -moz-appearance:textfield; }
+  .field input::-webkit-outer-spin-button,
+  .field input::-webkit-inner-spin-button { -webkit-appearance:none; margin:0; }
+  .field input:focus { border-color:var(--accent); }
+  .hint { font-size:.8rem; color:var(--faint); line-height:1.45; }
+
+  .err { margin-top:14px; color:var(--noise); font-size:.9rem; min-height:0; }
+  .err:empty { display:none; }
+
+  /* ---- the verdict ---- */
+  .verdict {
+    margin-top:22px; border:1px solid var(--line2); border-radius:12px;
+    background:var(--panel); padding:26px 24px 22px;
+    display:flex; flex-direction:column; gap:14px; }
+  .verdict[data-state="signal"] { border-color:var(--signal-line);
+    background:linear-gradient(0deg,var(--signal-wash),var(--signal-wash)),var(--panel); }
+  .verdict[data-state="noise"] { border-color:var(--noise-line);
+    background:linear-gradient(0deg,var(--noise-wash),var(--noise-wash)),var(--panel); }
+  .readout { font:12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:2.4px; text-transform:uppercase; color:var(--faint); }
+  .call { font-size:1.72rem; font-weight:800; letter-spacing:-.02em; line-height:1.15; color:var(--ink); }
+  .verdict[data-state="signal"] .call { color:var(--signal); }
+  .verdict[data-state="noise"] .call { color:var(--noise); }
+  .because { color:var(--dim); font-size:1.02rem; }
+  .because b { color:var(--ink); font-weight:650; font-variant-numeric:tabular-nums; }
+  .stats { display:flex; flex-wrap:wrap; gap:8px 26px; padding-top:14px; border-top:1px solid var(--line); }
+  .stat { display:flex; flex-direction:column; gap:2px; }
+  .stat .k { font:11px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:1.3px; text-transform:uppercase; color:var(--faint); }
+  .stat .v { font:600 1rem/1.3 ui-monospace,SFMono-Regular,Menlo,monospace;
+    color:var(--ink); font-variant-numeric:tabular-nums; }
+  .mark { font:11px/1 ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:2px; text-transform:uppercase; color:var(--faint); padding-top:2px; }
+
+  .callout { border:1px solid var(--line); border-left:2px solid var(--noise);
+    background:var(--panel); border-radius:8px; padding:18px 20px; }
+  .callout p { margin:0; }
+  .callout p + p { margin-top:.7em; }
+  .refrain { color:var(--ink); font-size:1.06rem; font-weight:600; letter-spacing:-.01em; }
+
+  .nav { margin-top:2.6em; padding-top:26px; border-top:1px solid var(--line);
+    font:13px/1.9 ui-monospace,Menlo,monospace; color:var(--faint); }
+  .nav a { color:var(--dim); margin-right:1.5em; text-decoration:none; }
+  .nav a:hover { color:var(--accent); }
+  footer { margin-top:32px; position:relative; padding-top:22px;
+    font:13px/1.8 ui-monospace,Menlo,monospace; color:var(--faint); }
+  footer::before { content:""; position:absolute; top:0; left:0; width:110px; height:2px;
+    border-radius:2px; background:var(--spectrum); opacity:.7; }
+  footer a { color:var(--dim); text-decoration:none; } footer a:hover { color:var(--accent); }
+
+  [hidden] { display:none !important; }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg:#f4f6f9; --bg-tint:#eef1f6; --panel:#ffffff; --panel2:#f6f8fb;
+      --ink:#12151c; --dim:#535b6b; --faint:#7a8294; --line:#e2e6ee; --line2:#d2d8e4;
+      --accent:#128677; --teal:#128677; --link:#0f7466;
+      --signal:#0f7466; --signal-wash:rgba(18,134,119,.07); --signal-line:rgba(18,134,119,.34);
+      --noise:#9c5c14;  --noise-wash:rgba(156,92,20,.07);  --noise-line:rgba(156,92,20,.34);
+      --field:#f6f8fb;
+      --spectrum:linear-gradient(90deg,#1f9d8d 0%,#38669e 32%,#6d6bc0 60%,#c07a1f 100%);
+    }
+    body { background:
+      radial-gradient(1100px 560px at 80% -6%, rgba(18,134,119,.05), transparent 60%),
+      radial-gradient(820px 560px at 12% 3%, rgba(109,107,192,.05), transparent 62%),
+      linear-gradient(180deg, var(--bg-tint), var(--bg) 42%); }
+  }
+  @media (max-width:520px) {
+    h1 { font-size:2rem; } .wrap { padding:56px 20px 80px; }
+    .fields { grid-template-columns:1fr; gap:12px; }
+    .field input { font-size:1.3rem; padding:12px; }
+    .call { font-size:1.44rem; }
+  }
+</style>
+</head>
+<body>
+<div class="topline" aria-hidden="true"></div>
+<div class="wrap">
+
+  <div class="eyebrow">Free tool</div>
+  <h1>Are you beating chance?</h1>
+
+  <p class="intro">Enter your last run of sessions. This works out whether your hit rate is
+  doing something luck wouldn't, and says so in plain words. Nothing is stored and nothing
+  is sent anywhere. The numbers never leave this page.</p>
+
+  <form id="f" novalidate>
+    <div class="fields">
+      <div class="field">
+        <label for="n">Sessions</label>
+        <input id="n" name="n" type="number" inputmode="numeric" min="1" max="100000" step="1" value="12">
+      </div>
+      <div class="field">
+        <label for="k">Hits</label>
+        <input id="k" name="k" type="number" inputmode="numeric" min="0" max="100000" step="1" value="5">
+      </div>
+      <div class="field">
+        <label for="p">Targets each</label>
+        <input id="p" name="p" type="number" inputmode="numeric" min="2" max="1000" step="1" value="4">
+      </div>
+    </div>
+    <p class="hint">Targets each is how many options you were choosing between. A standard
+    blind pool of four is 4. Hits are the sessions you scored as a hit.</p>
+    <p class="err" id="err" role="alert"></p>
+  </form>
+
+  <section class="verdict" id="v" data-state="" aria-live="polite">
+    <div class="readout" id="v-read">Result</div>
+    <div class="call" id="v-call"></div>
+    <p class="because" id="v-because"></p>
+    <div class="stats">
+      <div class="stat"><span class="k">Your rate</span><span class="v" id="s-rate"></span></div>
+      <div class="stat"><span class="k">Chance rate</span><span class="v" id="s-chance"></span></div>
+      <div class="stat"><span class="k">Expected by luck</span><span class="v" id="s-exp"></span></div>
+      <div class="stat"><span class="k">Odds of a run this good</span><span class="v" id="s-p"></span></div>
+    </div>
+    <div class="mark">quietoptics.com/chance</div>
+  </section>
+
+  <h2>One way this fools people</h2>
+  <div class="callout">
+    <p>If you check this after every session and stop as soon as the number finally looks
+    good, you will cross the line by luck eventually. That isn't a signal. That's shopping
+    for one.</p>
+    <p>Decide how many sessions you're running <strong>before</strong> you start, run all of
+    them, then look once at the end. It is the least fun rule in practice work and the only
+    one that makes the answer mean anything.</p>
+  </div>
+
+  <h2>What this does and doesn't tell you</h2>
+  <p>It tells you whether a run of hits is unusual for the pool size you were working with.
+  That is all. It can't tell you <em>why</em> a run is unusual, and one good run is not a
+  result. What settles it is a long record kept honestly, scored the same way every time,
+  including the sessions you'd rather forget.</p>
+  <p class="refrain">Maybe it's noise. Maybe it isn't. This is how you'd actually find out.</p>
+
+  <!-- ================================================================
+       Aperture block. Switch on at release: set APP_LIVE = true below.
+       ================================================================ -->
+  <section id="app-block" hidden>
+    <h2>Aperture keeps the record for you</h2>
+    <p>This page answers the question once. <strong>Aperture</strong> answers it continuously,
+    from your own logged sessions, and scores them for you so the judging isn't yours to
+    fudge. Blind targets, a sealed impression, then the reveal. Everything stays on your
+    phone.</p>
+    <p><a id="app-link" href="https://apps.apple.com/app/id6790210599">Aperture: Remote Viewing on the App Store</a></p>
+  </section>
+
+  <!-- ================================================================
+       Email capture. Switch on once Kit exists: set SIGNUP_LIVE = true
+       and paste the Kit form action into SIGNUP_ACTION below.
+       ================================================================ -->
+  <section id="signup-block" hidden>
+    <h2>The scoring guide</h2>
+    <p>A one page guide to scoring a session without fooling yourself: the sensory vocabulary,
+    the blind protocol, and the traps above. Free.</p>
+    <form id="signup" method="post">
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" name="email_address" type="email" required placeholder="you@example.com" style="font-size:1rem;text-align:left;">
+      </div>
+      <p class="hint">One email at launch. No spam, ever.</p>
+    </form>
+  </section>
+
+  <div class="nav">
+    <a href="/">← Quiet Optics</a>
+    <a href="/aperture/">Aperture</a>
+    <a href="/principles/">Principles</a>
+  </div>
+  <footer>© 2026 Quiet Optics LLC · <a href="mailto:support@quietoptics.com">support@quietoptics.com</a></footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---- release switches ------------------------------------------------ */
+  var APP_LIVE      = false;  // true once Aperture is released
+  var SIGNUP_LIVE   = false;  // true once the Kit account exists
+  var SIGNUP_ACTION = "";     // paste the Kit form action URL here
+
+  if (APP_LIVE)    document.getElementById("app-block").hidden = false;
+  if (SIGNUP_LIVE && SIGNUP_ACTION) {
+    document.getElementById("signup-block").hidden = false;
+    document.getElementById("signup").action = SIGNUP_ACTION;
+  }
+
+  /* ---- exact binomial -------------------------------------------------- */
+  /* Small n is the normal case here (people have 12 sessions, not 1200), so
+     the normal approximation the app uses is not good enough on this page.
+     This is the exact test. */
+
+  var LG = [
+    0.99999999999980993, 676.5203681218851, -1259.1392167224028,
+    771.32342877765313, -176.61502916214059, 12.507343278686905,
+    -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7
+  ];
+  function logGamma(z) {
+    if (z < 0.5) return Math.log(Math.PI / Math.sin(Math.PI * z)) - logGamma(1 - z);
+    z -= 1;
+    var x = LG[0];
+    for (var i = 1; i < 9; i++) x += LG[i] / (z + i);
+    var t = z + 7 + 0.5;
+    return 0.5 * Math.log(2 * Math.PI) + (z + 0.5) * Math.log(t) - t + Math.log(x);
+  }
+  function logChoose(n, k) {
+    return logGamma(n + 1) - logGamma(k + 1) - logGamma(n - k + 1);
+  }
+  /* P(X >= k) for X ~ Binomial(n, p) */
+  function pAtLeast(n, k, p) {
+    if (k <= 0) return 1;
+    if (k > n) return 0;
+    var lp = Math.log(p), lq = Math.log1p(-p), s = 0;
+    for (var i = k; i <= n; i++) s += Math.exp(logChoose(n, i) + i * lp + (n - i) * lq);
+    return s > 1 ? 1 : s;
+  }
+  /* Fewest hits out of n that would clear the 5% bar. null if unreachable. */
+  function threshold(n, p) {
+    for (var k = 1; k <= n; k++) if (pAtLeast(n, k, p) < 0.05) return k;
+    return null;
+  }
+
+  /* ---- formatting ------------------------------------------------------ */
+  function pct(x) { return (x * 100).toFixed(x < 0.1 ? 1 : 0) + "%"; }
+  function oneIn(pv) {
+    if (pv <= 0) return "beyond 1 in a million";
+    var d = 1 / pv;
+    if (d >= 1e6) return "beyond 1 in a million";
+    if (d >= 1000) return "about 1 in " + Math.round(d / 100) * 100;
+    if (d >= 100)  return "about 1 in " + Math.round(d / 10) * 10;
+    return "about 1 in " + Math.round(d);
+  }
+
+  /* ---- wiring ---------------------------------------------------------- */
+  var $n = document.getElementById("n"),
+      $k = document.getElementById("k"),
+      $p = document.getElementById("p"),
+      $err = document.getElementById("err"),
+      $v = document.getElementById("v"),
+      $read = document.getElementById("v-read"),
+      $call = document.getElementById("v-call"),
+      $because = document.getElementById("v-because"),
+      $rate = document.getElementById("s-rate"),
+      $chance = document.getElementById("s-chance"),
+      $exp = document.getElementById("s-exp"),
+      $pv = document.getElementById("s-p");
+
+  function fail(msg) {
+    $err.textContent = msg;
+    $v.dataset.state = "";
+    $read.textContent = "Result";
+    $call.textContent = "";
+    $because.textContent = "";
+    $rate.textContent = $chance.textContent = $exp.textContent = $pv.textContent = "";
+  }
+
+  function run() {
+    var n = parseInt($n.value, 10),
+        k = parseInt($k.value, 10),
+        pool = parseInt($p.value, 10);
+
+    if (!isFinite(n) || !isFinite(k) || !isFinite(pool)) return fail("");
+    if (n < 1)      return fail("You need at least one session.");
+    if (pool < 2)   return fail("A pool needs at least 2 targets to choose between.");
+    if (k < 0)      return fail("Hits can't be negative.");
+    if (k > n)      return fail("You can't have more hits than sessions.");
+    if (n > 100000) return fail("That's more sessions than this page can handle.");
+
+    $err.textContent = "";
+
+    var p    = 1 / pool,
+        pv   = pAtLeast(n, k, p),
+        exp  = n * p,
+        need = threshold(n, p),
+        sig  = pv < 0.05;
+
+    $v.dataset.state = sig ? "signal" : "noise";
+    $read.textContent = n + " sessions · " + k + " hits · 1 in " + pool;
+    $rate.textContent = pct(k / n);
+    $chance.textContent = pct(p);
+    $exp.textContent = exp.toFixed(1);
+    $pv.textContent = sig ? oneIn(pv) : "unremarkable";
+
+    if (sig) {
+      $call.textContent = "That's a signal.";
+      $because.innerHTML = "A run this good happens by luck " + oneIn(pv) +
+        ". Chance alone would have given you about <b>" + exp.toFixed(1) +
+        "</b> hits, and you got <b>" + k + "</b>. Worth keeping going, and worth " +
+        "keeping honest.";
+    } else {
+      $call.textContent = "That's what chance looks like.";
+      if (need === null) {
+        var minN = Math.ceil(Math.log(0.05) / Math.log(p));
+        $because.innerHTML = "At <b>" + n + "</b> session" + (n === 1 ? "" : "s") +
+          ", even hitting every one wouldn't rule out luck. You'd need at least <b>" +
+          minN + "</b> sessions before a perfect run would mean anything at this pool size.";
+      } else {
+        $because.innerHTML = "Chance alone would give you about <b>" + exp.toFixed(1) +
+          "</b> hits out of " + n + ". You have <b>" + k + "</b>. You'd need <b>" + need +
+          "</b> before it would count as more than luck.";
+      }
+    }
+  }
+
+  [$n, $k, $p].forEach(function (el) {
+    el.addEventListener("input", run);
+    el.addEventListener("change", run);
+  });
+  document.getElementById("f").addEventListener("submit", function (e) { e.preventDefault(); });
+  run();
+})();
+</script>
+</body>
+</html>
