@@ -123,6 +123,23 @@
     border-radius:2px; background:var(--spectrum); opacity:.7; }
   footer a { color:var(--dim); text-decoration:none; } footer a:hover { color:var(--accent); }
 
+  /* ---- signup ---- */
+  .signup-row { display:flex; gap:10px; margin-top:6px; }
+  .signup-row input {
+    flex:1 1 auto; min-width:0; background:var(--field); color:var(--ink);
+    border:1px solid var(--line2); border-radius:8px; padding:13px 14px;
+    font:400 1rem/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+  .signup-row input:focus { border-color:var(--accent); outline:none; }
+  .signup-row button {
+    flex:0 0 auto; background:var(--accent); color:var(--bg); border:0; border-radius:8px;
+    padding:13px 20px; cursor:pointer;
+    font:600 1rem/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+  .signup-row button:hover { opacity:.88; }
+  .signup-row button:disabled { opacity:.5; cursor:default; }
+  .signup-msg { color:var(--accent); font-size:.94rem; margin-top:.7em; }
+  .signup-msg:empty { display:none; }
+  @media (max-width:520px) { .signup-row { flex-direction:column; } }
+
   [hidden] { display:none !important; }
 
   @media (prefers-color-scheme: light) {
@@ -227,16 +244,19 @@
        Email capture. Switch on once Kit exists: set SIGNUP_LIVE = true
        and paste the Kit form action into SIGNUP_ACTION below.
        ================================================================ -->
-  <section id="signup-block" hidden>
-    <h2>The scoring guide</h2>
-    <p>A one page guide to scoring a session without fooling yourself: the sensory vocabulary,
-    the blind protocol, and the traps above. Free.</p>
-    <form id="signup" method="post">
-      <div class="field">
-        <label for="email">Email</label>
-        <input id="email" name="email_address" type="email" required placeholder="you@example.com" style="font-size:1rem;text-align:left;">
+  <section id="signup-block">
+    <h2>Know when Aperture launches</h2>
+    <p>Aperture is the practice journal this calculator came out of. Blind targets, a sealed
+    impression, then the reveal, with the scoring done for you so it isn't yours to fudge.
+    Leave an address and we'll send one note when it's out.</p>
+    <form id="signup" action="https://app.kit.com/forms/9803192/subscriptions" method="post">
+      <div class="signup-row">
+        <input id="email" name="email_address" type="email" required autocomplete="email"
+               placeholder="you@example.com" aria-label="Email address">
+        <button type="submit">Notify me</button>
       </div>
-      <p class="hint">One email at launch. No spam, ever.</p>
+      <p class="hint">One email at launch. No spam, ever, and one click to leave.</p>
+      <p class="signup-msg" id="signup-msg" role="status"></p>
     </form>
   </section>
 
@@ -254,14 +274,37 @@
   "use strict";
 
   /* ---- release switches ------------------------------------------------ */
-  var APP_LIVE      = false;  // true once Aperture is released
-  var SIGNUP_LIVE   = false;  // true once the Kit account exists
-  var SIGNUP_ACTION = "";     // paste the Kit form action URL here
+  /* Signup is live: Kit form 9803192 (uid b07baa3f77), double opt-in.
+     APP_LIVE stays false until Aperture is released. */
+  var APP_LIVE = false;
 
-  if (APP_LIVE)    document.getElementById("app-block").hidden = false;
-  if (SIGNUP_LIVE && SIGNUP_ACTION) {
-    document.getElementById("signup-block").hidden = false;
-    document.getElementById("signup").action = SIGNUP_ACTION;
+  if (APP_LIVE) document.getElementById("app-block").hidden = false;
+
+  /* Post to Kit without loading their script, so no third-party code runs on
+     a site whose whole claim is that nothing leaves your device. The form has
+     a real action and method, so if fetch is unavailable or the request fails
+     the browser just posts it the ordinary way. */
+  var sform = document.getElementById("signup");
+  if (sform && window.fetch && window.FormData) {
+    sform.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var msg = document.getElementById("signup-msg"),
+          btn = sform.querySelector("button");
+      btn.disabled = true;
+      msg.textContent = "Sending.";
+      fetch(sform.action, {
+        method: "POST",
+        body: new FormData(sform),
+        headers: { "Accept": "application/json" }
+      }).then(function (r) {
+        if (!r.ok) throw new Error("http " + r.status);
+        msg.textContent = "Now check your inbox and confirm, and you're on the list.";
+        sform.querySelector("input").value = "";
+        btn.disabled = false;
+      }).catch(function () {
+        sform.submit();
+      });
+    });
   }
 
   /* ---- exact binomial -------------------------------------------------- */

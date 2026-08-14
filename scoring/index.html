@@ -83,6 +83,24 @@
   .keyline p { margin:0; }
   .refrain { color:var(--ink); font-size:1.06rem; font-weight:600; letter-spacing:-.01em; }
 
+  /* ---- signup ---- */
+  .signup-row { display:flex; gap:10px; margin-top:6px; }
+  .signup-row input {
+    flex:1 1 auto; min-width:0; background:var(--panel2); color:var(--ink);
+    border:1px solid var(--line2); border-radius:8px; padding:13px 14px;
+    font:400 1rem/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+  .signup-row input:focus { border-color:var(--accent); outline:none; }
+  .signup-row button {
+    flex:0 0 auto; background:var(--accent); color:var(--bg); border:0; border-radius:8px;
+    padding:13px 20px; cursor:pointer;
+    font:600 1rem/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+  .signup-row button:hover { opacity:.88; }
+  .signup-row button:disabled { opacity:.5; cursor:default; }
+  .signup-hint { font-size:.85rem; color:var(--faint); margin-top:.7em; }
+  .signup-msg { color:var(--accent); font-size:.94rem; margin-top:.6em; }
+  .signup-msg:empty { display:none; }
+  @media (max-width:520px) { .signup-row { flex-direction:column; } }
+
   .nav { margin-top:2.6em; padding-top:26px; border-top:1px solid var(--line);
     font:13px/1.9 ui-monospace,Menlo,monospace; color:var(--faint); }
   .nav a { color:var(--dim); margin-right:1.5em; text-decoration:none; }
@@ -234,6 +252,20 @@
     <p class="refrain">Maybe it's noise. Maybe it isn't. This is how you'd actually find out.</p>
   </div>
 
+  <h2>Know when Aperture launches</h2>
+  <p>Aperture is the practice journal this guide came out of: blind targets, a sealed
+  impression, then the reveal, with the scoring done for you so it isn't yours to fudge.
+  Leave an address and we'll send one note when it's out.</p>
+  <form id="signup" action="https://app.kit.com/forms/9803192/subscriptions" method="post">
+    <div class="signup-row">
+      <input id="email" name="email_address" type="email" required autocomplete="email"
+             placeholder="you@example.com" aria-label="Email address">
+      <button type="submit">Notify me</button>
+    </div>
+    <p class="signup-hint">One email at launch. No spam, ever, and one click to leave.</p>
+    <p class="signup-msg" id="signup-msg" role="status"></p>
+  </form>
+
   <div class="nav">
     <a href="/">← Quiet Optics</a>
     <a href="/chance/">Beating chance?</a>
@@ -241,5 +273,35 @@
   </div>
   <footer>© 2026 Quiet Optics LLC · <a href="mailto:support@quietoptics.com">support@quietoptics.com</a></footer>
 </div>
+
+<script>
+(function () {
+  "use strict";
+  /* Post to Kit (form 9803192) without loading their script, so no third-party
+     code runs here. The form has a real action and method, so if fetch is
+     unavailable or the request fails the browser posts it the ordinary way. */
+  var sform = document.getElementById("signup");
+  if (!sform || !window.fetch || !window.FormData) return;
+  sform.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var msg = document.getElementById("signup-msg"),
+        btn = sform.querySelector("button");
+    btn.disabled = true;
+    msg.textContent = "Sending.";
+    fetch(sform.action, {
+      method: "POST",
+      body: new FormData(sform),
+      headers: { "Accept": "application/json" }
+    }).then(function (r) {
+      if (!r.ok) throw new Error("http " + r.status);
+      msg.textContent = "Now check your inbox and confirm, and you're on the list.";
+      sform.querySelector("input").value = "";
+      btn.disabled = false;
+    }).catch(function () {
+      sform.submit();
+    });
+  });
+})();
+</script>
 </body>
 </html>
