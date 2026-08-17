@@ -112,6 +112,8 @@
     color:var(--faint); }
   .status .dot { width:9px; height:9px; border-radius:50%; background:var(--app); flex:0 0 auto;
     box-shadow:0 0 0 3px var(--accent-glow); }
+  a.status { display:inline-flex; text-decoration:none; transition:color .18s; }
+  a.status:hover { color:var(--ink); }
 
   footer { margin-top:80px; padding-top:28px; position:relative;
     font:13px/1.8 ui-monospace,Menlo,monospace; color:var(--faint); }
@@ -213,10 +215,10 @@
     <p class="privacy">Reticle runs entirely on your device. No accounts, no analytics, no servers. Optional Pro iCloud sync moves your record through your own private iCloud, and nowhere else.</p>
   </section>
 
-  <div class="status">
+  <a class="status" href="https://apps.apple.com/us/app/reticle-prediction-journal/id6791280108">
     <span class="dot"></span>
-    Coming soon to the App Store
-  </div>
+    Download on the App Store
+  </a>
 
   <footer>
     <div class="footer-links">
