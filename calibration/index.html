@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>Are you actually calibrated? · Quiet Optics</title>
+<meta name="description" content="A free tool for forecasters. Drop in your resolved predictions and see your real calibration curve and Brier score. Nothing is uploaded. Reads Fatebook, PredictionBook, and Reticle exports.">
+<link rel="canonical" href="https://quietoptics.com/calibration/">
+<meta property="og:site_name" content="Quiet Optics">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Are you actually calibrated?">
+<meta property="og:description" content="Drop in your resolved predictions. See your real calibration curve and Brier score. Nothing leaves this page.">
+<meta property="og:url" content="https://quietoptics.com/calibration/">
+<meta property="og:image" content="https://quietoptics.com/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0a0e16">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f4f6f9">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<style>
+  :root {
+    /* Spectral instrument — dark (default) */
+    --bg:#0a0e16; --bg-tint:#0c1220; --panel:#111725; --panel2:#161d2e;
+    --ink:#e9ecf2; --dim:#9aa3b4; --faint:#5c657a; --line:#1e2636; --line2:#2a3346;
+    --accent:#5fd3c4; --teal:#5fd3c4; --link:#5fd3c4;
+    --signal:#5fd3c4; --signal-wash:rgba(95,211,196,.10); --signal-line:rgba(95,211,196,.38);
+    --noise:#e09c4d;  --noise-wash:rgba(224,156,77,.10);  --noise-line:rgba(224,156,77,.38);
+    --field:#0d1320;
+    --spectrum:linear-gradient(90deg,#5fd3c4 0%,#8ebdef 32%,#8d8bd4 60%,#e09c4d 100%);
+  }
+  * { box-sizing:border-box; }
+  html { -webkit-text-size-adjust:100%; }
+  body { margin:0; color:var(--ink);
+    background:
+      radial-gradient(1200px 600px at 78% -8%, rgba(95,211,196,.06), transparent 60%),
+      radial-gradient(900px 620px at 12% 4%, rgba(141,139,212,.05), transparent 62%),
+      linear-gradient(180deg, var(--bg-tint), var(--bg) 40%);
+    background-attachment:fixed; background-color:var(--bg);
+    font:17px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased; }
+  .topline { position:fixed; top:0; left:0; right:0; height:2px; z-index:5;
+    background:var(--spectrum); opacity:.85; }
+  .wrap { position:relative; max-width:720px; margin:0 auto; padding:72px 24px 110px; }
+  .eyebrow { font:13px/1 ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:4px; text-transform:uppercase; color:var(--teal);
+    display:inline-flex; align-items:center; gap:12px; }
+  .eyebrow::after { content:""; width:30px; height:1px; background:linear-gradient(90deg,var(--teal),transparent); }
+  h1 { font-size:2.4rem; font-weight:800; letter-spacing:-.02em; margin:.4em 0 .15em; line-height:1.1; }
+  h2 { font-size:1.16rem; font-weight:700; margin:2.4em 0 .5em; color:var(--ink); letter-spacing:-.01em; }
+  p, li { color:var(--dim); }
+  strong { color:var(--ink); font-weight:600; }
+  em { color:var(--dim); font-style:italic; }
+  a { color:var(--link); text-decoration:none; } a:hover { text-decoration:underline; }
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+    outline:2px solid var(--accent); outline-offset:3px; border-radius:4px; }
+  ul { padding-left:1.2em; } li { margin:.35em 0; }
+  hr { border:0; border-top:1px solid var(--line); margin:2.6em 0; }
+  .intro { margin-bottom:2em; }
+
+  /* ---- the instrument: input ---- */
+  .drop {
+    border:1.5px dashed var(--line2); border-radius:12px; background:var(--field);
+    padding:34px 24px; text-align:center; transition:border-color .15s, background .15s; }
+  .drop.over { border-color:var(--accent); background:linear-gradient(0deg,var(--signal-wash),var(--signal-wash)),var(--field); }
+  .drop .big { font-size:1.08rem; color:var(--ink); font-weight:600; }
+  .drop .sub { font-size:.9rem; color:var(--faint); margin-top:6px; }
+  .drop .pick { color:var(--accent); cursor:pointer; text-decoration:underline; }
+  .controls { display:flex; flex-wrap:wrap; gap:8px 18px; align-items:center;
+    margin-top:14px; font:13px/1.5 ui-monospace,Menlo,monospace; }
+  .controls a { color:var(--dim); cursor:pointer; }
+  .controls a:hover { color:var(--accent); }
+  details.paste { margin-top:14px; }
+  details.paste summary { cursor:pointer; color:var(--dim);
+    font:13px/1.5 ui-monospace,Menlo,monospace; }
+  details.paste summary:hover { color:var(--accent); }
+  textarea#csv {
+    width:100%; margin-top:10px; min-height:120px; resize:vertical;
+    background:var(--field); color:var(--ink); border:1px solid var(--line2);
+    border-radius:8px; padding:12px 13px;
+    font:400 .85rem/1.5 ui-monospace,SFMono-Regular,Menlo,monospace; }
+  textarea#csv:focus { border-color:var(--accent); outline:none; }
+  .go { margin-top:12px; background:var(--accent); color:var(--bg); border:0; border-radius:8px;
+    padding:12px 22px; cursor:pointer;
+    font:600 1rem/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+  .go:hover { opacity:.88; }
+  .err { margin-top:14px; color:var(--noise); font-size:.92rem; }
+  .err:empty { display:none; }
+
+  /* ---- the verdict ---- */
+  .verdict {
+    margin-top:24px; border:1px solid var(--line2); border-radius:12px;
+    background:var(--panel); padding:26px 24px 22px;
+    display:flex; flex-direction:column; gap:14px; }
+  .verdict[data-state="signal"] { border-color:var(--signal-line);
+    background:linear-gradient(0deg,var(--signal-wash),var(--signal-wash)),var(--panel); }
+  .verdict[data-state="noise"] { border-color:var(--noise-line);
+    background:linear-gradient(0deg,var(--noise-wash),var(--noise-wash)),var(--panel); }
+  .readout { font:12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:2.4px; text-transform:uppercase; color:var(--faint); }
+  .call { font-size:1.72rem; font-weight:800; letter-spacing:-.02em; line-height:1.15; color:var(--ink); }
+  .verdict[data-state="signal"] .call { color:var(--signal); }
+  .verdict[data-state="noise"] .call { color:var(--noise); }
+  .because { color:var(--dim); font-size:1.02rem; }
+  .because b { color:var(--ink); font-weight:650; font-variant-numeric:tabular-nums; }
+
+  /* ---- the chart ---- */
+  .chartwrap { margin-top:20px; }
+  svg.chart { display:block; width:100%; height:auto; max-width:420px; margin:0 auto;
+    font:11px/1 ui-monospace,SFMono-Regular,Menlo,monospace; }
+  svg.chart .grid { stroke:var(--line); stroke-width:1; }
+  svg.chart .frame { stroke:var(--line2); stroke-width:1; fill:none; }
+  svg.chart .ideal { stroke:var(--faint); stroke-width:1.5; stroke-dasharray:5 5; }
+  svg.chart .path { stroke:var(--accent); stroke-width:2; fill:none; opacity:.55; }
+  svg.chart .pt { fill:var(--accent); stroke:var(--bg); stroke-width:1.5; }
+  svg.chart text { fill:var(--faint); }
+  svg.chart .axlab { fill:var(--dim); font-size:11px; letter-spacing:1px; text-transform:uppercase; }
+  .chart-legend { text-align:center; font:12px/1.6 ui-monospace,Menlo,monospace;
+    color:var(--faint); margin-top:4px; }
+  .chart-legend .dash { color:var(--dim); }
+
+  /* ---- stat grid ---- */
+  .stats { display:flex; flex-wrap:wrap; gap:14px 26px; margin-top:22px;
+    padding-top:18px; border-top:1px solid var(--line); }
+  .stat { display:flex; flex-direction:column; gap:3px; min-width:110px; }
+  .stat .k { font:11px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:1.3px; text-transform:uppercase; color:var(--faint); }
+  .stat .v { font:600 1.35rem/1.15 ui-monospace,SFMono-Regular,Menlo,monospace;
+    color:var(--ink); font-variant-numeric:tabular-nums; }
+  .stat .v small { font-size:.7em; color:var(--faint); font-weight:400; }
+
+  /* ---- decomposition + bin table ---- */
+  table.bins { width:100%; border-collapse:collapse; margin-top:14px;
+    font:13px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace; }
+  table.bins th, table.bins td { padding:8px 6px; text-align:right;
+    border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; }
+  table.bins th { color:var(--faint); font-weight:400; letter-spacing:.5px;
+    text-transform:uppercase; font-size:11px; }
+  table.bins td { color:var(--dim); }
+  table.bins td:first-child, table.bins th:first-child { text-align:left; color:var(--ink); }
+  .caveat { margin-top:16px; border:1px solid var(--line); border-left:2px solid var(--noise);
+    background:var(--panel); border-radius:8px; padding:14px 18px; font-size:.94rem; }
+  .caveat p { margin:0; }
+
+  .callout { border:1px solid var(--line); border-left:2px solid var(--teal);
+    background:var(--panel); border-radius:8px; padding:18px 20px; }
+  .callout p { margin:0; } .callout p + p { margin-top:.7em; }
+  .refrain { color:var(--ink); font-size:1.06rem; font-weight:600; letter-spacing:-.01em; }
+
+  .nav { margin-top:2.6em; padding-top:26px; border-top:1px solid var(--line);
+    font:13px/1.9 ui-monospace,Menlo,monospace; color:var(--faint); }
+  .nav a { color:var(--dim); margin-right:1.5em; text-decoration:none; }
+  .nav a:hover { color:var(--accent); }
+  footer { margin-top:32px; position:relative; padding-top:22px;
+    font:13px/1.8 ui-monospace,Menlo,monospace; color:var(--faint); }
+  footer::before { content:""; position:absolute; top:0; left:0; width:110px; height:2px;
+    border-radius:2px; background:var(--spectrum); opacity:.7; }
+  footer a { color:var(--dim); text-decoration:none; } footer a:hover { color:var(--accent); }
+
+  [hidden] { display:none !important; }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg:#f4f6f9; --bg-tint:#eef1f6; --panel:#ffffff; --panel2:#f6f8fb;
+      --ink:#12151c; --dim:#535b6b; --faint:#7a8294; --line:#e2e6ee; --line2:#d2d8e4;
+      --accent:#128677; --teal:#128677; --link:#0f7466;
+      --signal:#0f7466; --signal-wash:rgba(18,134,119,.07); --signal-line:rgba(18,134,119,.34);
+      --noise:#9c5c14;  --noise-wash:rgba(156,92,20,.07);  --noise-line:rgba(156,92,20,.34);
+      --field:#f6f8fb;
+      --spectrum:linear-gradient(90deg,#1f9d8d 0%,#38669e 32%,#6d6bc0 60%,#c07a1f 100%);
+    }
+    body { background:
+      radial-gradient(1100px 560px at 80% -6%, rgba(18,134,119,.05), transparent 60%),
+      radial-gradient(820px 560px at 12% 3%, rgba(109,107,192,.05), transparent 62%),
+      linear-gradient(180deg, var(--bg-tint), var(--bg) 42%); }
+  }
+  @media (max-width:520px) {
+    h1 { font-size:2rem; } .wrap { padding:56px 20px 80px; }
+    .call { font-size:1.44rem; } .stat { min-width:44%; }
+  }
+</style>
+</head>
+<body>
+<div class="topline" aria-hidden="true"></div>
+<div class="wrap">
+
+  <div class="eyebrow">Free tool</div>
+  <h1>Are you actually calibrated?</h1>
+
+  <p class="intro">Drop in your resolved predictions and this draws your calibration curve and
+  works out your Brier score, in plain words. It reads <strong>Fatebook</strong>,
+  <strong>PredictionBook</strong>, and <strong>Reticle</strong> exports. Everything happens in
+  this page. Nothing is uploaded, nothing is stored, and your file never leaves your device.</p>
+
+  <div class="drop" id="drop">
+    <div class="big">Drop your CSV here</div>
+    <div class="sub">or <span class="pick" id="pick" role="button" tabindex="0">choose a file</span>
+      &middot; a Fatebook, PredictionBook, or Reticle export</div>
+    <input type="file" id="file" accept=".csv,text/csv" hidden>
+  </div>
+
+  <div class="controls">
+    <a id="sample" role="button" tabindex="0">Try it with sample data</a>
+  </div>
+
+  <details class="paste">
+    <summary>or paste CSV text</summary>
+    <textarea id="csv" spellcheck="false" placeholder="Paste the contents of your export here, header row included."></textarea>
+    <button class="go" id="run" type="button">Score it</button>
+  </details>
+
+  <p class="err" id="err" role="alert"></p>
+
+  <!-- ---- results ---- -->
+  <section id="results" hidden>
+    <section class="verdict" id="v" data-state="" aria-live="polite">
+      <div class="readout" id="v-read">Result</div>
+      <div class="call" id="v-call"></div>
+      <p class="because" id="v-because"></p>
+
+      <div class="chartwrap">
+        <div id="chart"></div>
+        <div class="chart-legend">
+          <span class="dash">- - -</span> perfect calibration &middot; dots are your confidence bands
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><span class="k">Brier score</span><span class="v" id="s-brier"></span></div>
+        <div class="stat"><span class="k">Resolved calls</span><span class="v" id="s-n"></span></div>
+        <div class="stat"><span class="k">Avg confidence</span><span class="v" id="s-conf"></span></div>
+        <div class="stat"><span class="k">Actually right</span><span class="v" id="s-acc"></span></div>
+      </div>
+    </section>
+
+    <h2>Where the Brier score comes from</h2>
+    <p>A Brier score breaks into three parts. Lower total is better, and the ideal is all
+    resolution and no miscalibration.</p>
+    <div class="stats">
+      <div class="stat"><span class="k">Calibration <small>(lower better)</small></span><span class="v" id="s-rel"></span></div>
+      <div class="stat"><span class="k">Resolution <small>(higher better)</small></span><span class="v" id="s-res"></span></div>
+      <div class="stat"><span class="k">Uncertainty <small>(fixed by your topics)</small></span><span class="v" id="s-unc"></span></div>
+    </div>
+
+    <h2>Your confidence bands</h2>
+    <table class="bins" id="bintable">
+      <thead><tr><th>You said</th><th>Calls</th><th>Avg conf</th><th>Right</th><th>Gap</th></tr></thead>
+      <tbody id="binbody"></tbody>
+    </table>
+    <div class="caveat" id="caveat" hidden><p id="caveat-text"></p></div>
+    <div class="controls" style="margin-top:18px;">
+      <a id="reset" role="button" tabindex="0">Score another file</a>
+    </div>
+  </section>
+
+  <h2>How this is measured</h2>
+  <div class="callout">
+    <p>Every resolved prediction becomes two numbers: how sure you were, folded onto a 50 to 100
+    scale (a 30% "yes" is a 70% "no"), and whether you turned out to be right. Predictions you
+    logged at exactly 50% are a coin flip with no side, so they sit out of the curve. Anything
+    still unresolved, or resolved as ambiguous, is left out too.</p>
+    <p>The <strong>calibration curve</strong> groups your calls into confidence bands and asks the
+    only question that matters: when you said 80%, were you right about 80% of the time? On the
+    line is perfect. Below it means overconfident, above it means you sell yourself short. The
+    <strong>Brier score</strong> is the average squared distance between your confidence and the
+    truth, so smaller is sharper.</p>
+    <p class="refrain">One good year isn't calibration. A long record, scored the same way every
+    time, is.</p>
+  </div>
+
+  <!-- ================================================================
+       Reticle block. App is live (App Store id 6791280108).
+       ================================================================ -->
+  <section id="app-block">
+    <h2>Reticle keeps the record for you</h2>
+    <p>This page scores a file you already have. <strong>Reticle</strong> is the prediction journal
+    that builds the record in the first place: log a call with a confidence level, it reminds you
+    when it comes due, and your calibration curve and Brier score update as you resolve them. It
+    imports these same Fatebook and PredictionBook files, and predictions lock the moment you save
+    so the past can't be quietly rewritten. Everything stays on your phone. No account, no
+    analytics, no AI.</p>
+    <p><a id="app-link" href="https://apps.apple.com/us/app/reticle-prediction-journal/id6791280108">Reticle: Prediction Journal on the App Store</a></p>
+  </section>
+
+  <!-- ================================================================
+       Email capture. Reuses the Quiet Optics Kit form for now; a
+       forecasting-specific list/tag would be better later.
+       ================================================================ -->
+  <section id="signup-block">
+    <h2>The occasional note</h2>
+    <p><strong>Reticle</strong> is the iOS prediction journal this tool came out of. Leave an address
+    and we'll send the occasional note when we ship something worth a forecaster's time, plus a
+    heads-up before the ACX prediction season each winter. A few emails a year, and one click to leave.</p>
+    <form id="signup" action="https://app.kit.com/forms/9803192/subscriptions" method="post">
+      <div class="controls" style="gap:10px;">
+        <input id="email" name="email_address" type="email" required autocomplete="email"
+               placeholder="you@example.com" aria-label="Email address"
+               style="flex:1 1 auto;min-width:0;background:var(--field);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:13px 14px;font:400 1rem/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+        <button type="submit" class="go" style="margin-top:0;">Send it</button>
+      </div>
+      <p class="chart-legend" id="signup-msg" role="status" style="text-align:left;margin-top:.7em;color:var(--accent);"></p>
+    </form>
+  </section>
+
+  <div class="nav">
+    <a href="/">&larr; Quiet Optics</a>
+    <a href="/reticle/">Reticle</a>
+    <a href="/chance/">Beating chance?</a>
+    <a href="/principles/">Principles</a>
+  </div>
+  <footer>&copy; 2026 Quiet Optics LLC &middot; <a href="mailto:support@quietoptics.com">support@quietoptics.com</a></footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ====================================================================
+     CSV parsing — a straight port of Reticle's RFC 4180 reader so this
+     page detects and reads the exact same files the app imports.
+     ==================================================================== */
+  function parseCSV(text) {
+    var rows = [], field = "", row = [], inQuotes = false, i = 0, n = text.length;
+    function endField() { row.push(field); field = ""; }
+    function endRow() { endField(); rows.push(row); row = []; }
+    while (i < n) {
+      var c = text[i];
+      if (inQuotes) {
+        if (c === '"') {
+          if (text[i + 1] === '"') { field += '"'; i += 2; continue; }
+          inQuotes = false; i++; continue;
+        }
+        field += c; i++; continue;
+      }
+      if (c === '"' && field === "") { inQuotes = true; i++; continue; }
+      if (c === ",") { endField(); i++; continue; }
+      if (c === "\r") { if (text[i + 1] === "\n") i++; endRow(); i++; continue; }
+      if (c === "\n") { endRow(); i++; continue; }
+      field += c; i++;
+    }
+    if (field !== "" || row.length) endRow();
+    return rows;
+  }
+
+  function parseKeyed(text) {
+    var rows = parseCSV(text);
+    if (!rows.length) return [];
+    var keys = rows[0].map(function (h) { return h.trim().toLowerCase(); });
+    return rows.slice(1).map(function (r) {
+      var o = {};
+      for (var j = 0; j < keys.length && j < r.length; j++) o[keys[j]] = r[j];
+      return o;
+    });
+  }
+
+  /* ====================================================================
+     Format detection + extraction. Mirrors PredictionImport.swift.
+     Produces {conf, correct} pairs for resolved, decided predictions:
+       conf    = how sure you were, folded to 0.5..1.0
+       correct = true if you turned out right
+     ==================================================================== */
+  function num(s) { var v = parseFloat(s); return isFinite(v) ? v : null; }
+  function intg(s) { var v = parseInt(s, 10); return isFinite(v) ? v : null; }
+
+  function extract(records) {
+    if (!records.length) throw new Error("empty");
+    var first = records[0], k = Object.keys(first);
+    var has = function (key) { return k.indexOf(key) !== -1; };
+    if (has("question title")) return fatebook(records);
+    if (has("creator_id") && has("mean_confidence")) return predictionBook(records);
+    if (has("statement") && has("confidence")) return reticle(records);
+    throw new Error("unrecognized");
+  }
+
+  /* fold a 0..1 event probability to {conf 0.5..1, side} */
+  function fold(p) {
+    if (p === 0.5) return null;           /* no side */
+    return p > 0.5 ? { conf: p, yesSide: true } : { conf: 1 - p, yesSide: false };
+  }
+
+  function fatebook(records) {
+    var skipped = 0, pending = 0, rows = [];
+    records.forEach(function (r) {
+      if ((r["multiple choice option"] || "") !== "") { skipped++; return; }
+      var title = r["question title"] || "";
+      var p = num(r["forecast (scale = 0-1)"]);
+      if (!title || p === null) { skipped++; return; }
+      rows.push({
+        key: title + "|" + (r["question created at"] || ""),
+        at: r["forecast created at"] || "",
+        p: Math.max(0, Math.min(1, p)),
+        res: (r["resolution"] || "").toUpperCase()
+      });
+    });
+    /* keep the latest forecast per question */
+    var latest = {};
+    rows.forEach(function (row) {
+      var e = latest[row.key];
+      if (!e || row.at > e.at) latest[row.key] = row;
+    });
+    var pts = [];
+    Object.keys(latest).forEach(function (key) {
+      var row = latest[key];
+      if (row.res !== "YES" && row.res !== "NO") { pending++; return; }
+      var f = fold(row.p);
+      if (!f) { skipped++; return; }
+      var happened = row.res === "YES";
+      pts.push({ conf: f.conf, correct: f.yesSide === happened });
+    });
+    return { source: "Fatebook", pts: pts, skipped: skipped, pending: pending };
+  }
+
+  function predictionBook(records) {
+    var skipped = 0, pending = 0, pts = [];
+    records.forEach(function (r) {
+      var desc = r["description"] || "";
+      var mean = intg(r["mean_confidence"]);
+      if (!desc || mean === null || mean <= 0) { skipped++; return; }
+      var out = (r["outcome"] || "").toLowerCase();
+      if (out !== "true" && out !== "false") { pending++; return; }
+      var f = fold(mean / 100);
+      if (!f) { skipped++; return; }
+      var happened = out === "true";
+      pts.push({ conf: f.conf, correct: f.yesSide === happened });
+    });
+    return { source: "PredictionBook", pts: pts, skipped: skipped, pending: pending };
+  }
+
+  function reticle(records) {
+    var skipped = 0, pending = 0, pts = [];
+    records.forEach(function (r) {
+      var stmt = r["statement"] || "";
+      var conf = intg(r["confidence"]);
+      if (!stmt || conf === null || conf < 50 || conf > 99) { skipped++; return; }
+      var out = r["outcome"];
+      if (out === "hit") pts.push({ conf: conf / 100, correct: true });
+      else if (out === "miss") pts.push({ conf: conf / 100, correct: false });
+      else if (out === "void") skipped++;
+      else pending++;
+    });
+    return { source: "Reticle", pts: pts, skipped: skipped, pending: pending };
+  }
+
+  /* ====================================================================
+     The statistics.
+     ==================================================================== */
+  var BINS = [[0.50, 0.60], [0.60, 0.70], [0.70, 0.80], [0.80, 0.90], [0.90, 1.0001]];
+
+  function stats(pts) {
+    var N = pts.length;
+    var brier = 0, sumConf = 0, right = 0;
+    pts.forEach(function (d) {
+      var y = d.correct ? 1 : 0;
+      brier += (d.conf - y) * (d.conf - y);
+      sumConf += d.conf;
+      if (d.correct) right++;
+    });
+    brier /= N;
+    var meanConf = sumConf / N;
+    var acc = right / N;
+
+    /* bin for the curve + Brier decomposition (event = "were you right") */
+    var bins = BINS.map(function (b) {
+      return { lo: b[0], hi: b[1], n: 0, sumConf: 0, right: 0 };
+    });
+    pts.forEach(function (d) {
+      for (var j = 0; j < bins.length; j++) {
+        if (d.conf >= bins[j].lo && d.conf < bins[j].hi) {
+          bins[j].n++; bins[j].sumConf += d.conf; if (d.correct) bins[j].right++;
+          break;
+        }
+      }
+    });
+    var rel = 0, res = 0;
+    bins.forEach(function (b) {
+      if (!b.n) return;
+      b.meanConf = b.sumConf / b.n;
+      b.acc = b.right / b.n;
+      rel += b.n * (b.meanConf - b.acc) * (b.meanConf - b.acc);
+      res += b.n * (b.acc - acc) * (b.acc - acc);
+    });
+    rel /= N; res /= N;
+    var unc = acc * (1 - acc);
+
+    return { N: N, brier: brier, meanConf: meanConf, acc: acc,
+             bins: bins, rel: rel, res: res, unc: unc };
+  }
+
+  /* ====================================================================
+     Rendering.
+     ==================================================================== */
+  function pct(x) { return Math.round(x * 100) + "%"; }
+  function pct1(x) { return (x * 100).toFixed(x * 100 < 10 ? 1 : 0) + "%"; }
+
+  function drawChart(s) {
+    var W = 360, H = 360, m = 44, pw = W - m - 14, ph = H - m - 22, x0 = m, y0 = 14;
+    function X(v) { return x0 + v * pw; }               /* v in 0..1 */
+    function Y(v) { return y0 + (1 - v) * ph; }
+    var svg = ['<svg class="chart" viewBox="0 0 ' + W + ' ' + H + '" role="img" ' +
+      'aria-label="Calibration curve: your confidence versus how often you were right">'];
+    /* gridlines at 0,25,50,75,100 */
+    [0, .25, .5, .75, 1].forEach(function (g) {
+      svg.push('<line class="grid" x1="' + X(0) + '" y1="' + Y(g) + '" x2="' + X(1) + '" y2="' + Y(g) + '"/>');
+      svg.push('<line class="grid" x1="' + X(g) + '" y1="' + Y(0) + '" x2="' + X(g) + '" y2="' + Y(1) + '"/>');
+      svg.push('<text x="' + (X(0) - 8) + '" y="' + (Y(g) + 4) + '" text-anchor="end">' + (g * 100) + '</text>');
+      svg.push('<text x="' + X(g) + '" y="' + (Y(0) + 18) + '" text-anchor="middle">' + (g * 100) + '</text>');
+    });
+    svg.push('<rect class="frame" x="' + X(0) + '" y="' + Y(1) + '" width="' + pw + '" height="' + ph + '"/>');
+    /* ideal diagonal */
+    svg.push('<line class="ideal" x1="' + X(0) + '" y1="' + Y(0) + '" x2="' + X(1) + '" y2="' + Y(1) + '"/>');
+    /* connect populated bins */
+    var used = s.bins.filter(function (b) { return b.n; });
+    if (used.length > 1) {
+      svg.push('<polyline class="path" points="' + used.map(function (b) {
+        return X(b.meanConf) + "," + Y(b.acc);
+      }).join(" ") + '"/>');
+    }
+    used.forEach(function (b) {
+      var r = 4 + Math.min(9, Math.sqrt(b.n) * 1.6);
+      svg.push('<circle class="pt" cx="' + X(b.meanConf) + '" cy="' + Y(b.acc) + '" r="' + r.toFixed(1) + '"/>');
+    });
+    /* axis labels */
+    svg.push('<text class="axlab" x="' + X(0.5) + '" y="' + (H - 2) + '" text-anchor="middle">Your confidence</text>');
+    svg.push('<text class="axlab" transform="translate(12,' + Y(0.5) + ') rotate(-90)" text-anchor="middle">How often right</text>');
+    svg.push('</svg>');
+    return svg.join("");
+  }
+
+  function show(s, meta) {
+    var gapPP = Math.round((s.meanConf - s.acc) * 100);
+    var v = document.getElementById("v");
+    var call = document.getElementById("v-call"),
+        because = document.getElementById("v-because"),
+        read = document.getElementById("v-read");
+
+    read.textContent = meta.source + " · " + s.N + " resolved call" + (s.N === 1 ? "" : "s");
+
+    if (Math.abs(gapPP) <= 5) {
+      v.dataset.state = "signal";
+      call.textContent = "Well calibrated.";
+      because.innerHTML = "On the calls you've resolved, you were on average <b>" + pct(s.meanConf) +
+        "</b> sure and right <b>" + pct(s.acc) + "</b> of the time. Your confidence tracks reality " +
+        "closely. That's rare, and it's the whole point.";
+    } else if (gapPP > 5) {
+      v.dataset.state = "noise";
+      call.textContent = "Overconfident.";
+      because.innerHTML = "You were on average <b>" + pct(s.meanConf) + "</b> sure but right only <b>" +
+        pct(s.acc) + "</b> of the time, a gap of <b>" + gapPP + " points</b>. Your confidence runs " +
+        "ahead of your accuracy. The fix is boring and it works: shade your high-confidence calls down.";
+    } else {
+      v.dataset.state = "noise";
+      call.textContent = "Underconfident.";
+      because.innerHTML = "You were on average <b>" + pct(s.meanConf) + "</b> sure but right <b>" +
+        pct(s.acc) + "</b> of the time. You're better than you think. When you feel 70%, you're " +
+        "closer to " + pct(s.acc) + ". Trust your calls more.";
+    }
+
+    document.getElementById("chart").innerHTML = drawChart(s);
+    document.getElementById("s-brier").innerHTML = s.brier.toFixed(3);
+    document.getElementById("s-n").textContent = s.N;
+    document.getElementById("s-conf").textContent = pct(s.meanConf);
+    document.getElementById("s-acc").textContent = pct(s.acc);
+    document.getElementById("s-rel").innerHTML = s.rel.toFixed(3);
+    document.getElementById("s-res").innerHTML = s.res.toFixed(3);
+    document.getElementById("s-unc").innerHTML = s.unc.toFixed(3);
+
+    var body = document.getElementById("binbody");
+    body.innerHTML = "";
+    s.bins.forEach(function (b) {
+      var label = Math.round(b.lo * 100) + "–" + (b.hi > 1 ? 100 : Math.round(b.hi * 100)) + "%";
+      var tr = document.createElement("tr");
+      if (!b.n) {
+        tr.innerHTML = "<td>" + label + "</td><td>0</td><td>—</td><td>—</td><td>—</td>";
+      } else {
+        var gap = Math.round((b.meanConf - b.acc) * 100);
+        var gaptxt = gap === 0 ? "0" : (gap > 0 ? "+" + gap : gap);
+        tr.innerHTML = "<td>" + label + "</td><td>" + b.n + "</td><td>" + pct(b.meanConf) +
+          "</td><td>" + pct(b.acc) + "</td><td>" + gaptxt + "</td>";
+      }
+      body.appendChild(tr);
+    });
+
+    /* honesty gates */
+    var caveat = document.getElementById("caveat"), ct = document.getElementById("caveat-text");
+    var notes = [];
+    if (s.N < 20) notes.push("With only " + s.N + " resolved call" + (s.N === 1 ? "" : "s") +
+      ", this is a rough sketch, not a verdict. Calibration needs dozens of resolved predictions " +
+      "before the curve settles down.");
+    if (meta.pending) notes.push(meta.pending + " prediction" + (meta.pending === 1 ? " was" : "s were") +
+      " still unresolved and left out.");
+    if (meta.skipped) notes.push(meta.skipped + " row" + (meta.skipped === 1 ? " was" : "s were") +
+      " skipped (ambiguous, multiple-choice, or missing a usable confidence).");
+    if (notes.length) { ct.textContent = notes.join(" "); caveat.hidden = false; }
+    else caveat.hidden = true;
+
+    document.getElementById("results").hidden = false;
+    document.getElementById("results").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  /* ====================================================================
+     Wiring.
+     ==================================================================== */
+  var errEl = document.getElementById("err");
+  function fail(msg) { errEl.textContent = msg; document.getElementById("results").hidden = true; }
+
+  function process(text) {
+    errEl.textContent = "";
+    if (!text || !text.trim()) return fail("That file looks empty.");
+    var meta;
+    try { meta = extract(parseKeyed(text)); }
+    catch (e) {
+      if (e.message === "unrecognized")
+        return fail("This doesn't look like a Fatebook, PredictionBook, or Reticle export. " +
+          "Check that the header row is intact.");
+      return fail("The file has no predictions in it.");
+    }
+    if (!meta.pts.length)
+      return fail("Found a " + meta.source + " file, but none of its predictions are resolved yet, " +
+        "so there's nothing to score. Come back once some have come due.");
+    show(stats(meta.pts), meta);
+  }
+
+  function readFile(file) {
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function () { process(String(reader.result)); };
+    reader.onerror = function () { fail("Couldn't read that file. Try pasting the text instead."); };
+    reader.readAsText(file);
+  }
+
+  var drop = document.getElementById("drop"),
+      fileInput = document.getElementById("file");
+  document.getElementById("pick").addEventListener("click", function () { fileInput.click(); });
+  document.getElementById("pick").addEventListener("keydown", function (e) {
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); fileInput.click(); }
+  });
+  fileInput.addEventListener("change", function () { readFile(fileInput.files[0]); });
+  ["dragenter", "dragover"].forEach(function (ev) {
+    drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.add("over"); });
+  });
+  ["dragleave", "drop"].forEach(function (ev) {
+    drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.remove("over"); });
+  });
+  drop.addEventListener("drop", function (e) {
+    if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) readFile(e.dataTransfer.files[0]);
+  });
+  document.getElementById("run").addEventListener("click", function () {
+    process(document.getElementById("csv").value);
+  });
+  document.getElementById("reset").addEventListener("click", function () {
+    document.getElementById("results").hidden = true;
+    document.getElementById("csv").value = "";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  /* ---- sample data (Reticle format, a lightly overconfident forecaster) ---- */
+  var SAMPLE = "statement,confidence,negated,created_at,resolve_by,resolved_at,tag,note,outcome\n" +
+    [
+      ["It will rain here tomorrow", 60, "false", "hit"],
+      ["My package arrives by Friday", 70, "false", "hit"],
+      ["The team ships the feature this sprint", 80, "false", "miss"],
+      ["I finish the book this month", 75, "false", "miss"],
+      ["Interest rates hold at the next meeting", 65, "false", "hit"],
+      ["The meeting runs over an hour", 55, "false", "hit"],
+      ["We hit the quarterly target", 85, "false", "miss"],
+      ["The flight is on time", 70, "false", "miss"],
+      ["My friend says yes to the trip", 80, "false", "hit"],
+      ["The bug is fixed by review", 90, "false", "miss"],
+      ["It stays under budget", 75, "false", "miss"],
+      ["The candidate accepts the offer", 85, "false", "hit"],
+      ["I run three times this week", 60, "false", "hit"],
+      ["The client renews", 90, "false", "hit"],
+      ["Rain on race day", 55, "true", "hit"],
+      ["The talk gets accepted", 70, "false", "miss"],
+      ["Launch slips past the date", 65, "false", "hit"],
+      ["I wake before 7 all week", 80, "false", "miss"],
+      ["The stock closes up today", 60, "false", "miss"],
+      ["The repair costs under 200", 75, "false", "hit"],
+      ["My prediction post gets 10 comments", 70, "false", "miss"],
+      ["The store has it in stock", 85, "false", "hit"],
+      ["We finish the migration Friday", 90, "false", "miss"],
+      ["The recipe works first try", 55, "false", "hit"],
+      ["I keep the streak 30 days", 95, "false", "miss"],
+      ["The vote passes", 80, "false", "hit"],
+      ["It ships internationally", 70, "false", "hit"],
+      ["The interview goes well", 85, "false", "hit"]
+    ].map(function (r, i) {
+      var d = "2026-0" + (1 + (i % 6)) + "-1" + (i % 9) + "T09:00:00Z";
+      return [r[0], r[1], r[2], d, d, d, "", "", r[3]].join(",");
+    }).join("\n");
+
+  document.getElementById("sample").addEventListener("click", function () {
+    document.getElementById("csv").value = SAMPLE;
+    process(SAMPLE);
+  });
+
+  /* ---- Kit signup, posted without loading their script ---- */
+  var sform = document.getElementById("signup");
+  if (sform && window.fetch && window.FormData) {
+    sform.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var msg = document.getElementById("signup-msg"), btn = sform.querySelector("button");
+      btn.disabled = true; msg.textContent = "Sending.";
+      fetch(sform.action, { method: "POST", body: new FormData(sform), headers: { "Accept": "application/json" } })
+        .then(function (r) {
+          if (!r.ok) throw new Error("http " + r.status);
+          msg.textContent = "Now check your inbox and confirm, and you're on the list.";
+          sform.querySelector("input").value = ""; btn.disabled = false;
+        })
+        .catch(function () { sform.submit(); });
+    });
+  }
+})();
+</script>
+</body>
+</html>
